@@ -1,0 +1,28 @@
+#!/usr/bin/python
+
+#Add required libraries to Xcode project during build for Google Analytics
+from mod_pbxproj import *
+from os import path, listdir
+from shutil import copytree
+import sys
+
+frameworks = [
+              'AdSupport.framework',
+              'CoreData.framework',
+              'SystemConfiguration.framework',
+              'libz.dylib'
+              ]
+
+framework_dir = path.join(sys.argv[0],'..','..','Plugins','iOS')
+
+
+
+pbx_file_path = sys.argv[1] + '/Unity-iPhone.xcodeproj/project.pbxproj'
+pbx_object = XcodeProject.Load(pbx_file_path)
+
+pbx_object.add_framework_search_paths([path.abspath(framework_dir)])
+
+for framework in frameworks:
+    pbx_object.add_file('System/Library/' + framework, tree='SDKROOT')
+
+pbx_object.save()
