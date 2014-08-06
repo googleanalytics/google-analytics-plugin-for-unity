@@ -352,7 +352,7 @@ ________________
 
 Custom Metrics can be sent as part of any hit by using the Builder version of the method signatures. The example below is for an event hit, but it will work for all hit types which take a *Builder as a parameter. Custom Metrics must be defined on the Google Analytics website before hits can be received. Instructions on how to do can be found [here](https://support.google.com/analytics/answer/2709897).
 ```csharp
-public T SetCustomMetric(int metricNumber, string value);
+	public T SetCustomMetric(int metricNumber, string value);
 ```
 #####Sample Hit:
 ```csharp
@@ -368,12 +368,12 @@ ________________
 
 Campaign parameters can be sent as part of any hit by using the Builder version of the method signatures. The example below is for a timing hit.
 ```csharp
-public T SetCampaignName(string campaignName);
-public T SetCampaignSource(string campaignSource);
-public T SetCampaignMedium(string campaignMedium);
-public T SetCampaignKeyword(string campaignKeyword);
-public T SetCampaignContent(string campaignContent);
-public T SetCampaignID(string campaignID);
+	public T SetCampaignName(string campaignName);
+	public T SetCampaignSource(string campaignSource);
+	public T SetCampaignMedium(string campaignMedium);
+	public T SetCampaignKeyword(string campaignKeyword);
+	public T SetCampaignContent(string campaignContent);
+	public T SetCampaignID(string campaignID);
 ```
 #####Sample Hit:
 ```csharp
