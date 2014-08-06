@@ -1,15 +1,13 @@
-# Google Analytics Plugin for Unity&reg; (beta)
+# Google Analytics Plugin for Unity (beta)
 _Copyright (c) 2014 Google Inc. All rights reserved._
 
-The __Google Analytics__ Plugin for Unity&reg; allows game developers to easily implement __Google Analytics__ in their Unity&reg; games on all platforms, without having to write separate implementations. Note that this is a beta and as such may contains bugs. Please let us know if you find one on our forums linked below. Use at your own risk.
+The __Google Analytics__ Plugin for Unity allows game developers to easily implement __Google Analytics__ in their Unity games on all platforms, without having to write separate implementations. Note that this is a beta and as such may contains bugs or other issues. Please report them through the Github issue tracker or submit a pull request. The plugin comes with no guarantees.
 
-_Unity&reg; is a trademark of Unity Technologies._ This project is not in any way endorsed or supervised by Unity Technologies.
+_Unity is a trademark of Unity Technologies._ This project is not in any way endorsed or supervised by Unity Technologies.
 
 _iOS is a trademark of Apple, Inc._
 
-## Overview
-
-###Google Analytics V3 Plugin Installation & Set-up:
+##Google Analytics V3 Plugin Installation & Set-up:
 
 ####Before beginning:
  - Set up a __Google Analytics__ app property or use an existing one. Instructions can
@@ -17,8 +15,10 @@ _iOS is a trademark of Apple, Inc._
  - If you want to log transactions or items, make sure you have Ecommerce enabled by following the instructions [here](https://support.google.com/analytics/answer/1009612?hl=en&ref_topic=1037061).
 
 ####Set up:
-1. Download __googleanalyticsv3.unitypackage__ from our [github page](https://github.com/googleanalytics/google-analytics-plugin-for-unity/raw/master/googleanalyticsV3.unitypackage) and import it into your Unity&reg; project by double clicking it .
-2. __[Android Only]__
+1. <h4>Installation</h4>
+Download __googleanalyticsv3.unitypackage__ from our [github page](https://github.com/googleanalytics/google-analytics-plugin-for-unity/raw/master/googleanalyticsV3.unitypackage) and import it into your Unity project by double clicking it .
+2. <h4>Platform specific configuration</h4>
+&nbsp;&nbsp;&nbsp;&nbsp;__[Android Only]__
   * If your project does not already have a file called _AndroidManifest.xml_ in _&#60;YOUR PROJECT ROOT>/Assets/Plugins/Android/_,  build the project for Android and then copy the _AndroidManifest.xml_ from the _Temp/StagingArea/_ directory (it will be under the directory you chose to build in). Paste it into _&#60;YOUR PROJECT ROOT>/Assets/Plugins/Android/_
   * Add the following permissions to the _AndroidManifest.xml_ in _&#60;YOUR PROJECT ROOT>/Assets/Plugins/Android/_ above the &#60;application> tag:
 	```
@@ -39,8 +39,8 @@ _iOS is a trademark of Apple, Inc._
 	  </intent-filter>
 	  
 	</receiver>
-	```
-3. __[iOS Only]__
+```
+__[iOS Only]__
  	* When building for iOS, you will need to add the following libraries to your Xcode project:
     	* AdSupport.framework
     	* CoreData.framework
@@ -48,49 +48,56 @@ _iOS is a trademark of Apple, Inc._
     	* libz.dylib
  	* If you would like the libraries to be automatically added when building for iOS, copy the file _PostProcessBuildPlayer_GA_ from the _iOS Extras_ folder and put it in the _&#60;YOUR PROJECT ROOT>/Assets/Editor_ folder.
  	* Next, get the mod_pbxproj.py script available [here](https://github.com/kronenthaler/mod-pbxproj) and copy it into the Editor directory as well. The libraries will now be added automatically during the build. 
-4. The plugin contains a prefab object called __GAv3.prefab__. Click on it (it will be under _Assets/Plugins/GoogleAnalyticsV3_ in the _Project_ view). In the _Inspector_ view on the right you can see a Script component attached to the prefab called _Google Analytics V3 (Script)_ with several properties underneath. Populate these fields with the correct values for your project. This will populate the object so you can use it everywhere in your project. _Note that you can use the same property ID for all platforms._ For example: <br>
-<code>Android Property ID: UA-XXXXXXX-1</code>
+4. <h4>Configure the GAv3 prefab with your tracking information</h4>
+Click on the prefab object called __GAv3.prefab__ which you can find in _Assets/Plugins/GoogleAnalyticsV3_ in the _Project_ view. The _Inspector_ view on the right will now display a Script component attached to the prefab with several properties underneath. 
+5. Populate these fields with the correct values for your project. 
+ 	* This will populate the object so you can use it everywhere in your project. 
+ 	* _Note that you can use the same property ID for all platforms._ 
+ 	* Sample values: <br>
+	<code>Android Property ID: UA-XXXXXXX-1</code>
+		<br>
+	<code>iOS Property ID: UA-XXXXXXX-2</code>
+		<br>
+	<code>Other Property ID: UA-XXXXXXX-3</code>
+		<br>
+	<code>App Name: MyGame</code>
+		<br>
+	<code>Bundle ID: com.example.games</code>
+		<br>
+	<code>App Version: 1.0</code>
 	<br>
-<code>iOS Property ID: UA-XXXXXXX-2</code>
+	<code>Dispatch Period: 5</code>
 	<br>
-<code>Other Property ID: UA-XXXXXXX-3</code>
+	<code>Sample Frequency: 100</code>
 	<br>
-<code>App Name: MyGame</code>
+	<code>Debug Mode: VERBOSE</code>
 	<br>
-<code>Bundle ID: com.example.games</code>
+	<code>Anonymize IP: false</code>
 	<br>
-<code>App Version: 1.0</code>
-<br>
-<code>Dispatch Period: 5</code>
-<br>
-<code>Sample Frequency: 100</code>
-<br>
-<code>Debug Mode: VERBOSE</code>
-<br>
-<code>Anonymize IP: false</code>
-<br>
-<code>Dry Run: false</code>
-<br>
+	<code>Dry Run: false</code>
+	<br>
 5. Drag the populated GAv3 from the _Project_ view up into the _Object Hierarchy_.
 
 6. Identify a _GameObject_ you wish to track (for example, a Player object) and click it in the _Object Hierarchy_ view. Create a new script using the _Add Component_ button in the _Inspector_ view if you do not already have a script attached to the object that you want to track.
 
-7. Create a public variable in the class to hold the GoogleAnalyticsV3 object by adding a public variable like this:
+7. <h4>Add a public variable for the tracker</h4>
+Create a public variable in the class to hold the GoogleAnalyticsV3 object by adding a public variable like this:
         public GoogleAnalyticsV3 googleAnalytics;
 
 8. You are ready to begin tracking! See the API reference below to see what kind of hits you can send   to __Google Analytics__.
 
-9. Save the script and return to your Unity&reg; window.
+9. Save the script and return to your Unity window.
 
 10. In the _Inspector_ view for that _GameObject_, you should now see the script you created and a field to populate called _Google Analytics_ (or the variable name you chose in Step 6). Drag the _GAv3_ object from the _Object Hierarchy_ view onto the field. 
 	* If you do not see the field to add the _GAv3_ prefab, check to make sure there are no compile errors in your script. The _Inspector_ will not update if there are existing errors. 
 
-11. You are now ready to start tracking that _GameObject_. Repeat the process for other objects you wish to track using the same prefab.
+11. <h4>Ready to track!</h4>
+You are now ready to start tracking that _GameObject_. Repeat the process for other objects you wish to track using the same prefab.
 
 
 ##Check out these additional resources:
-  - Google Analyics Plugin for Unity&reg; developer guide: Coming soon!
-  - [Google Group](https://groups.google.com/forum/?fromgroups#!forum/ga-mobile-app-analytics) - Ask questions and report issues here.
+  - Google Analyics Plugin for Unity developer guide: Coming soon!
+  - [Mobile App Analytics Google Group](https://groups.google.com/forum/?fromgroups#!forum/ga-mobile-app-analytics)
   - [Mobile Implementation Guide](https://developers.google.com/analytics/solutions/mobile-implementation-guide)
 
 ________________
