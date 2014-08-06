@@ -90,8 +90,8 @@ _iOS is a trademark of Apple, Inc._
 
 ##Check out these additional resources:
   - Google Analyics Plugin for Unity&reg; developer guide: Coming soon!
-  - Google Group: https://groups.google.com/forum/?fromgroups#!forum/ga-mobile-app-analytics
-  - Mobile Implementation guide: Coming soon!
+  - [Google Group](https://groups.google.com/forum/?fromgroups#!forum/ga-mobile-app-analytics) - Ask questions and report issues here.
+  - [Mobile Implementation Guide](https://developers.google.com/analytics/solutions/mobile-implementation-guide)
 
 ________________
 ________________
