@@ -48,10 +48,9 @@ __[iOS Only]__
     	* libz.dylib
  	* If you would like the libraries to be automatically added when building for iOS, copy the file _PostProcessBuildPlayer_GA_ from the _iOS Extras_ folder and put it in the _&#60;YOUR PROJECT ROOT>/Assets/Editor_ folder.
  	* Next, get the mod_pbxproj.py script available [here](https://github.com/kronenthaler/mod-pbxproj) and copy it into the Editor directory as well. The libraries will now be added automatically during the build. 
-4. <h4>Configure the GAv3 prefab with your tracking information</h4>
+4. <h4>Configure the GAv3 prefab</h4>
 Click on the prefab object called __GAv3.prefab__ which you can find in _Assets/Plugins/GoogleAnalyticsV3_ in the _Project_ view. The _Inspector_ view on the right will now display a Script component attached to the prefab with several properties underneath. 
-5. Populate these fields with the correct values for your project. 
- 	* This will populate the object so you can use it everywhere in your project. 
+5. Populate these fields with the correct values for your project. This will populate the object so you can use it everywhere in your project. 
  	* _Note that you can use the same property ID for all platforms._ 
  	* Sample values: <br>
 	<code>Android Property ID: UA-XXXXXXX-1</code>
@@ -80,11 +79,9 @@ Click on the prefab object called __GAv3.prefab__ which you can find in _Assets/
 
 6. Identify a _GameObject_ you wish to track (for example, a Player object) and click it in the _Object Hierarchy_ view. Create a new script using the _Add Component_ button in the _Inspector_ view if you do not already have a script attached to the object that you want to track.
 
-7. <h4>Add a public variable for the tracker</h4>
-Create a public variable in the class to hold the GoogleAnalyticsV3 object by adding a public variable like this:
-        public GoogleAnalyticsV3 googleAnalytics;
-
-8. You are ready to begin tracking! See the API reference below to see what kind of hits you can send   to __Google Analytics__.
+7. <h4>Store tracker in a public variable</h4>
+Create a public variable in the class to hold the GoogleAnalyticsV3 object by adding a public variable like this:<br>
+  <code>public GoogleAnalyticsV3 googleAnalytics;</code>
 
 9. Save the script and return to your Unity window.
 
@@ -92,7 +89,7 @@ Create a public variable in the class to hold the GoogleAnalyticsV3 object by ad
 	* If you do not see the field to add the _GAv3_ prefab, check to make sure there are no compile errors in your script. The _Inspector_ will not update if there are existing errors. 
 
 11. <h4>Ready to track!</h4>
-You are now ready to start tracking that _GameObject_. Repeat the process for other objects you wish to track using the same prefab.
+You are now ready to start tracking that _GameObject_. Repeat the process for other objects you wish to track using the same prefab. See the API reference below to learn what kind of hits you can send to __Google Analytics__.
 
 
 ##Check out these additional resources:
@@ -142,7 +139,10 @@ ________________
 
 #####Basic:
 ```csharp
-    public void LogEvent(string eventCategory, string eventAction, string eventLabel, long value);
+    public void LogEvent(string eventCategory, 
+    	string eventAction, 
+    	string eventLabel, 
+    	long value);
 ``` 
 #####Builder:
 ```csharp
@@ -193,7 +193,10 @@ ________________
 
 #####Basic:
 ```csharp
-    public void LogTiming(string timingCategory, long timingInterval, string timingName, string timingLabel);
+    public void LogTiming(string timingCategory, 
+    	long timingInterval, 
+    	string timingName, 
+    	string timingLabel);
 ``` 
 #####Builder:
 ```csharp
@@ -220,7 +223,9 @@ ________________
 
 #####Basic:
 ```csharp
-    public void LogSocial(string socialNetwork, string socialAction, string socialTarget);
+    public void LogSocial(string socialNetwork, 
+    	string socialAction, 
+    	string socialTarget);
 ``` 
 #####Builder:
 ```csharp
@@ -246,8 +251,18 @@ Methods below require Ecommerce to be enabled on the Google Analytics profile. I
 
 #####Basic:
 ```csharp
-    public void LogTransaction(string transID, string affiliation, double revenue, double tax, double shipping);
-    public void LogTransaction(string transID, string affiliation, double revenue, double tax, double shipping, string currencyCode);
+    public void LogTransaction(string transID, 
+    	string affiliation, 
+    	double revenue, 
+    	double tax, 
+    	double shipping);
+
+    public void LogTransaction(string transID, 
+    	string affiliation, 
+    	double revenue, 
+    	double tax, 
+    	double shipping, 
+    	string currencyCode);
 ``` 
 #####Builder:
 ```csharp
@@ -277,8 +292,20 @@ Methods below require Ecommerce to be enabled on the Google Analytics profile. I
 
 #####Basic:
 ```csharp
-    public void LogItem(string transID, string name, string SKU, string category, double price, long quantity);
-    public void LogItem(string transID, string name, string SKU, string category, double price, long quantity,  string currencyCode);
+    public void LogItem(string transID, 
+    	string name, 
+    	string SKU, 
+    	string category, 
+    	double price, 
+    	long quantity);
+
+    public void LogItem(string transID, 
+    	string name, 
+    	string SKU, 
+    	string category, 
+    	double price, 
+    	long quantity,  
+    	string currencyCode);
 ``` 
 #####Builder:
 ```csharp
