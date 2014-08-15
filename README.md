@@ -1,7 +1,7 @@
 # Google Analytics Plugin for Unity (beta)
 _Copyright (c) 2014 Google Inc. All rights reserved._
 
-The __Google Analytics__ Plugin for Unity allows game developers to easily implement __Google Analytics__ in their Unity games on all platforms, without having to write separate implementations. Note that this is a beta and as such may contains bugs or other issues. Please report them through the Github issue tracker or submit a pull request. The plugin comes with no guarantees.
+The __Google Analytics__ Plugin for Unity allows game developers to easily implement __Google Analytics__ in their Unity games on all platforms, without having to write separate implementations. Note that this is a beta and as such may contains bugs or other issues. Please report them through the Github [issue tracker](https://github.com/googleanalytics/google-analytics-plugin-for-unity/issues) or submit a pull request. The plugin comes with no guarantees.
 
 _Unity is a trademark of Unity Technologies._ This project is not in any way endorsed or supervised by Unity Technologies.
 
@@ -424,3 +424,17 @@ Free up managed resources and resets the tracker. The next tracking hit will hav
     googleAnalytics.Dispose();
 ```
 
+###Debugging:
+
+Not seeing hits? Try the suggestions below before [posting an issue](https://github.com/googleanalytics/google-analytics-plugin-for-unity/issues) on Github or on our [forums](https://groups.google.com/forum/?fromgroups#!forum/ga-mobile-app-analytics).
+
+1. Have you __set the log level__ to 'VERBOSE'? This will give you information about missing parameters or other issues which could be preventing your hits from being send.
+1. Did you fully __configure the prefab__ (especially the __Tracking ID__ for your platform and __Product Name__)?
+2. Did you set the __dispatch period__ to a reasonable value? A value of zero will stop dispatching from occuring all together, while too high a value will stop the hits from being show in the [Real-Time reports](https://www.google.com/analytics/web/#realtime) (though they will still be viewable in the other reports). The default value for the plugin is 5 seconds. 
+3. Are you seeing a __NullReferenceException__ when you run your game? This likely means you forgot to drag the configured prefab from the _Object Hierarchy_ onto the script reference in the _Inspector_ view.
+4. Are you getting __linker errors when building for iOS__? Follow the iOS instructions in [Step 2](https://github.com/googleanalytics/google-analytics-plugin-for-unity/blob/master/README.md#platform-specific-configuration) of the _Set up_ to automatically add the required libraries when building. 
+5. Are you getting __permissions errors on Android__? Follow the Android instructions in [Step 2](https://github.com/googleanalytics/google-analytics-plugin-for-unity/blob/master/README.md#platform-specific-configuration) of the _Set up_ to learn how to update your _AndroidManifest.xml_.
+6. Have you set the __Dry Run__ flag to unchecked? This flag is intended for testing your game when you don't wish to send hits to Google Analytics and will prevent all hits from being sent. 
+
+
+[![Analytics](https://ga-beacon.appspot.com/UA-53859386-1/google-analytics-plugin-for-unity/?pixel)](https://github.com/igrigorik/ga-beacon)
