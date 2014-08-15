@@ -7,7 +7,7 @@ _Unity is a trademark of Unity Technologies._ This project is not in any way end
 
 _iOS is a trademark of Apple, Inc._
 
-##Google Analytics V3 Plugin Installation & Set-up:
+##Google Analytics V3 Plugin Installation & Set up:
 
 ####Before beginning:
  - Set up a __Google Analytics__ app property or use an existing one. Instructions can
@@ -435,6 +435,3 @@ Not seeing hits? Try the suggestions below before [posting an issue](https://git
 4. Are you getting __linker errors when building for iOS__? Follow the iOS instructions in [Step 2](https://github.com/googleanalytics/google-analytics-plugin-for-unity/blob/master/README.md#platform-specific-configuration) of the _Set up_ to automatically add the required libraries when building. 
 5. Are you getting __permissions errors on Android__? Follow the Android instructions in [Step 2](https://github.com/googleanalytics/google-analytics-plugin-for-unity/blob/master/README.md#platform-specific-configuration) of the _Set up_ to learn how to update your _AndroidManifest.xml_.
 6. Have you set the __Dry Run__ flag to unchecked? This flag is intended for testing your game when you don't wish to send hits to Google Analytics and will prevent all hits from being sent. 
-
-
-[![Analytics](https://ga-beacon.appspot.com/UA-53859386-1/google-analytics-plugin-for-unity/?pixel)](https://github.com/igrigorik/ga-beacon)
