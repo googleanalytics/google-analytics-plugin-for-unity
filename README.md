@@ -423,3 +423,4 @@ Free up managed resources and resets the tracker. The next tracking hit will hav
 ```csharp
     googleAnalytics.Dispose();
 ```
+
