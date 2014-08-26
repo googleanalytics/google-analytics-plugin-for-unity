@@ -30,7 +30,7 @@ Download __googleanalyticsv3.unitypackage__ from our [github page](https://githu
 	```
 	<service android:name="com.google.analytics.tracking.android.CampaignTrackingService" />
 	
-	<receiver android:name="com.google.analytics.tracking.android.CampaignTrackingReceiver" android:exported="true" />
+	<receiver android:name="com.google.analytics.tracking.android.CampaignTrackingReceiver" android:exported="true" >
 	
 	  <intent-filter>
 	  
