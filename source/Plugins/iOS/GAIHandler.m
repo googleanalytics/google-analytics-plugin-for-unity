@@ -51,7 +51,7 @@ void anonymizeIP(){
 
 void setSampleFrequency(int sampleFrequency) {
     id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:kGAISampleRate value:sampleFrequency];
+    [tracker set:kGAISampleRate value:[@(sampleFrequency) stringValue]];
 }
 
 void setLogLevel(int logLevel) {
