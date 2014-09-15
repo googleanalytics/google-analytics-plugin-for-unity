@@ -238,22 +238,4 @@ void sendTiming(const char * timingCategory, const long long timingInterval, con
     [tracker send:[builder build]];
 }
 
-void send(const char* parameters) {
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    NSString *attris = [NSString stringWithUTF8String:parameters];
-    NSArray *attributesArray = [attris componentsSeparatedByString:@"\n"];
-    
-    NSMutableDictionary *oAttributes = [[NSMutableDictionary alloc] init];
-    for (int i=0; i < [attributesArray count]; i++) {
-        NSString *keyValuePair = [attributesArray objectAtIndex:i];
-        NSRange range = [keyValuePair rangeOfString:@"="];
-        if (range.location != NSNotFound) {
-            NSString *key = [keyValuePair substringToIndex:range.location];
-            NSString *value = [keyValuePair substringFromIndex:range.location+1];
-            [oAttributes setObject:value forKey:key];
-        }
-    }
-    [tracker send:oAttributes];
-}
-
 @end

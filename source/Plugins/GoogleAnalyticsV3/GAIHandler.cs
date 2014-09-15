@@ -115,17 +115,6 @@ public class GAIHandler {
   }
 
   [DllImport("__Internal")]
-  private static extern void send(string parametersString);
-  public void _send(Dictionary<string, string> parameters){
-    string parametersString = "";
-    foreach(KeyValuePair<string, string> kvp in parameters)
-    {
-        parametersString += kvp.Key + "=" + kvp.Value + "\n";
-    }
-    send(parametersString);
-  }
-
-  [DllImport("__Internal")]
   private static extern void dispatch();
   public void _dispatchHits(){
     dispatch();
@@ -149,7 +138,6 @@ public class GAIHandler {
     sendEvent(builder.GetEventCategory(), builder.GetEventAction(), builder.GetEventLabel(), builder.GetEventValue());
   }
 
-//NOT TESTED
   [DllImport("__Internal")]
   private static extern void sendTransaction(string transactionID, string affiliation, double revenue, double tax, double shipping, string currencyCode);
   public void _sendTransaction(TransactionHitBuilder builder){
