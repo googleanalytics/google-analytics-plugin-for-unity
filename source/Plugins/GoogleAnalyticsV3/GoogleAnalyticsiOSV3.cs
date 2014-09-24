@@ -42,16 +42,17 @@ public class GoogleAnalyticsiOSV3 {
     handler = new GAIHandler();
     handler._setDispatchInterval(dispatchPeriod);
     handler._setDryRun(dryRun);
-    handler._setSampleFrequency(sampleFrequency);
     handler._setTrackUncaughtExceptions(true);
+    SetLogLevel(logLevel);
+    handler._getTrackerWithTrackingId(trackingCode);
+
+    handler._setSampleFrequency(sampleFrequency);
     SetTrackerVal(Fields.APP_NAME, appName);
     SetTrackerVal(Fields.APP_ID, bundleIdentifier);
     SetTrackerVal(Fields.APP_VERSION, appVersion);
     if(anonymizeIP) {
       handler._anonymizeIP();
     }
-    SetLogLevel(logLevel);
-    handler._getTrackerWithTrackingId(trackingCode);
   }
 
   private void SetLogLevel(GoogleAnalyticsV3.DebugMode logLevel) {
