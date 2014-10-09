@@ -375,7 +375,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
   public void LogException(ExceptionHitBuilder builder) {
       object[] args = new object[2];
       args[0] = builder.GetExceptionDescription();
-      args[1] = builder.IsFatal() ? "true" : "false";
+      args[1] = new AndroidJavaObject("java.lang.Boolean", builder.IsFatal());
       object map;
       Dictionary<AndroidJavaObject, string> parameters =
           AddCustomVariablesAndCampaignParameters(builder);
