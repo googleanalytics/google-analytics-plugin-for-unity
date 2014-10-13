@@ -385,7 +385,7 @@ Campaign parameters can be sent as part of any hit by using the Builder version 
         .SetCampaignName("Summer Campaign")
         .SetCampaignSource("google")
         .SetCampaignMedium("cpc")
-        .setCampaignKeyword("games")
+        .SetCampaignKeyword("games")
         .SetCampaignContent("Free power ups")
         .SetCampaignId("Summer1"));
         
