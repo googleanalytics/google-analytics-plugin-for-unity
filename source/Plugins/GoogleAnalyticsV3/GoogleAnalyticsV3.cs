@@ -73,11 +73,13 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
   [Tooltip("If checked, hits will not be dispatched. Use for testing.")]
   public bool dryRun = false;
 
-  // TODO(emmanuellemm): Create conditional textbox attribute
+  // TODO: Create conditional textbox attribute
   [Tooltip("The amount of time in seconds your application can stay in" +
       "the background before the session is ended. Default is 30 minutes" +
       " (1800 seconds). A value of -1 will disable session management.")]
   public int sessionTimeout = 1800;
+
+  public static GoogleAnalyticsV3 instance = null;
 
   [HideInInspector]
   public readonly static string currencySymbol = "USD";
@@ -101,9 +103,10 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
   private GoogleAnalyticsMPV3 mpTracker = new GoogleAnalyticsMPV3();
 #endif
 
-  // TODO(emmanuellemm): Error checking on initialization parameters
+  // TODO: Error checking on initialization parameters
   private void InitializeTracker() {
     if (!initialized) {
+      instance = this;
       Debug.Log("Initializing Google Analytics 0.1.");
 #if UNITY_ANDROID && !UNITY_EDITOR
       androidTracker.SetTrackingCode(androidTrackingCode);
@@ -440,5 +443,10 @@ public void DispatchHits() {
       return false;
     }
     return true;
+  }
+
+  // Instance for running Coroutines from platform specific classes
+  public static GoogleAnalyticsV3 getInstance() {
+    return instance;
   }
 }

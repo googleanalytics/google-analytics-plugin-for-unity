@@ -40,18 +40,23 @@ public class GoogleAnalyticsMPV3 {
   private string clientId;
   private string url;
   private float timeStarted;
-  private Dictionary<Field, object> trackerValues;
+  private Dictionary<Field, object> trackerValues = new Dictionary<Field, object>();
   private bool startSessionOnNextHit = false;
   private bool endSessionOnNextHit = false;
+  private bool trackingCodeSet = true;
 
   public void InitializeTracker() {
+    if(String.IsNullOrEmpty(trackingCode)){
+      Debug.Log("No tracking code set for 'Other' platforms - hits will not be set");
+      trackingCodeSet = false;
+      return;
+    }
     if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
       Debug.Log("Platform is not Android or iOS - " +
           "hits will be sent using measurement protocol.");
     }
     screenRes = Screen.width + "x" + Screen.height;
     clientId = SystemInfo.deviceUniqueIdentifier;
-    trackerValues = new Dictionary<Field, object>();
     string language = Application.systemLanguage.ToString();
     optOut = false;
 #if !UNITY_WP8
@@ -89,6 +94,9 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private string AddTrackerVals() {
+    if(!trackingCodeSet){
+      return "";
+    }
     string vals = "";
     foreach (KeyValuePair<Field, object> pair in trackerValues){
       vals += AddOptionalMPParameter(pair.Key, pair.Value);
@@ -105,6 +113,12 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private void SendGaHitWithMeasurementProtocol(string url) {
+    if (String.IsNullOrEmpty(url)) {
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
+        Debug.Log("No tracking code set for 'Other' platforms - hit will not be sent.");
+      }
+      return;
+    }
     if (dryRun || optOut) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
         Debug.Log("Dry run or opt out enabled - hits will not be sent.");
@@ -123,30 +137,41 @@ public class GoogleAnalyticsMPV3 {
     if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.VERBOSE)) {
       Debug.Log(newUrl);
     }
-    WWW request = new WWW(newUrl);
-    while (!request.isDone) {
-    }
-    if (request.responseHeaders.ContainsKey("STATUS")) {
-      if (request.responseHeaders["STATUS"] == "HTTP/1.1 200 OK") {
-        if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
-          Debug.Log("Successfully sent Google Analytics hit.");
+    GoogleAnalyticsV3.getInstance().StartCoroutine(this.HandleWWW(new WWW(newUrl)));
+  }
+
+  /*
+    Make request using yield and coroutine to prevent lock up waiting on request to return.
+  */
+  public IEnumerator HandleWWW(WWW request)
+  {
+    while (!request.isDone)
+    {
+      yield return request;
+      if (request.responseHeaders.ContainsKey("STATUS")) {
+        if (request.responseHeaders["STATUS"] == "HTTP/1.1 200 OK") {
+          if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
+            Debug.Log("Successfully sent Google Analytics hit.");
+          }
+        } else {
+          if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
+            Debug.LogWarning("Google Analytics hit request rejected with" +
+                "status code " + request.responseHeaders["STATUS"]);
+          }
         }
       } else {
         if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
-          Debug.LogWarning("Google Analytics hit request rejected with" +
-            "status code " + request.responseHeaders["STATUS"]);
+          Debug.LogWarning("Google Analytics hit request failed with error "
+              + request.error);
         }
-      }
-    } else {
-      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
-        Debug.LogWarning("Google Analytics hit request failed with error "
-          + request.error);
       }
     }
   }
 
   private string AddRequiredMPParameter(Field parameter, object value) {
-    if (value == null) {
+    if(!trackingCodeSet){
+      return "";
+    } else if (value == null) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
         Debug.LogWarning("Value was null for required parameter " + parameter + ". Hit cannot be sent");
       }
@@ -157,7 +182,9 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private string AddRequiredMPParameter(Field parameter, string value) {
-    if (value == null) {
+    if(!trackingCodeSet){
+      return "";
+    } else if (value == null) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
         Debug.LogWarning("Value was null for required parameter " + parameter + ". Hit cannot be sent");
       }
@@ -168,7 +195,7 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private string AddOptionalMPParameter(Field parameter, object value) {
-    if (value == null) {
+    if (value == null || !trackingCodeSet) {
       return "";
     } else {
       return parameter + "=" +  WWW.EscapeURL(value.ToString());
@@ -176,7 +203,7 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private string AddOptionalMPParameter(Field parameter, string value) {
-    if (String.IsNullOrEmpty(value)) {
+    if (String.IsNullOrEmpty(value) || !trackingCodeSet) {
       return "";
     } else {
       return parameter + "=" + WWW.EscapeURL(value);
@@ -184,6 +211,9 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private string AddCustomVariables<T>(HitBuilder<T> builder) {
+    if(!trackingCodeSet){
+      return "";
+    }
     String url = "";
     foreach(KeyValuePair<int, string> entry in builder.GetCustomDimensions())
     {
@@ -210,6 +240,9 @@ public class GoogleAnalyticsMPV3 {
 
 
   private string AddCampaignParameters<T>(HitBuilder<T> builder) {
+    if(!trackingCodeSet){
+      return "";
+    }
     String url = "";
     url += AddOptionalMPParameter(Fields.CAMPAIGN_NAME, builder.GetCampaignName());
     url += AddOptionalMPParameter(Fields.CAMPAIGN_SOURCE, builder.GetCampaignSource());
@@ -382,4 +415,5 @@ public class GoogleAnalyticsMPV3 {
   public void SetOptOut(bool optOut) {
     this.optOut = optOut;
   }
+
 }
