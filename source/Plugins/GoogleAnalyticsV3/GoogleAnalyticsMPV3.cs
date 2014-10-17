@@ -68,7 +68,7 @@ public class GoogleAnalyticsMPV3 {
     }
 #endif
     try {
-      url = "http://www.google-analytics.com/collect?v=1"
+      url = "https://www.google-analytics.com/collect?v=1"
         + AddRequiredMPParameter(Fields.LANGUAGE, language)
         + AddRequiredMPParameter(Fields.SCREEN_RESOLUTION, screenRes)
         + AddRequiredMPParameter(Fields.APP_NAME, appName)
