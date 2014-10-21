@@ -438,3 +438,4 @@ Not seeing hits? Try the suggestions below before [posting an issue](https://git
 
 ###Thanks: 
   - [Knoxx-](https://github.com/Knoxx-) for fixing a typo in the Campaign tracking permissions
+  - [mataneine](https://github.com/mataneine) for filtering out meta files during iOS build post processing
