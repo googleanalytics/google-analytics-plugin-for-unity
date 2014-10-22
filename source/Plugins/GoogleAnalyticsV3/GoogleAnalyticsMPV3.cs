@@ -27,6 +27,9 @@ using System.Globalization;
   other than Android and iOS.
 */
 public class GoogleAnalyticsMPV3 {
+#if UNITY_ANDROID && !UNITY_EDITOR
+#elif UNITY_IPHONE && !UNITY_EDITOR
+#else
   private string trackingCode;
   private string bundleIdentifier;
   private string appName;
@@ -416,4 +419,5 @@ public class GoogleAnalyticsMPV3 {
     this.optOut = optOut;
   }
 
+#endif
 }
