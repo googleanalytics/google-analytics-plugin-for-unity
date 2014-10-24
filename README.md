@@ -46,7 +46,7 @@ __[iOS Only]__
     	* CoreData.framework
     	* SystemConfiguration.framework
     	* libz.dylib
-    	* sqlite3.dylib
+    	* libsqlite3.dylib
  	* If you would like the libraries to be automatically added when building for iOS, copy the file _PostProcessBuildPlayer_GA_ from the _iOS Extras_ folder and put it in the _&#60;YOUR PROJECT ROOT>/Assets/Editor_ folder.
  	* Next, get the mod_pbxproj.py script available [here](https://github.com/kronenthaler/mod-pbxproj) and copy it into the Editor directory as well. The libraries will now be added automatically during the build. 
 4. <h4>Configure the GAv3 prefab</h4>
@@ -440,3 +440,4 @@ Not seeing hits? Try the suggestions below before [posting an issue](https://git
 ###Thanks: 
   - [Knoxx-](https://github.com/Knoxx-) for fixing a typo in the Campaign tracking permissions
   - [mataneine](https://github.com/mataneine) for filtering out meta files during iOS build post processing
+  - [g8minhquan](https://github.com/g8minhquan) for identifying the sqlite3.dylib library needs to be added if using the -ObjC linker flag
