@@ -10,7 +10,8 @@ frameworks = [
               'AdSupport.framework',
               'CoreData.framework',
               'SystemConfiguration.framework',
-              'libz.dylib'
+              'libz.dylib',
+              'libsqlite3.dylib'
               ]
 
 framework_dir = path.join(sys.argv[0],'..','..','Plugins','iOS')
