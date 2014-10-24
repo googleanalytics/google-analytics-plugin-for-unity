@@ -49,6 +49,7 @@ __[iOS Only]__
     	* libsqlite3.dylib
  	* If you would like the libraries to be automatically added when building for iOS, copy the file _PostProcessBuildPlayer_GA_ from the _iOS Extras_ folder and put it in the _&#60;YOUR PROJECT ROOT>/Assets/Editor_ folder.
  	* Next, get the mod_pbxproj.py script available [here](https://github.com/kronenthaler/mod-pbxproj) and copy it into the Editor directory as well. The libraries will now be added automatically during the build. 
+ 	* _Note: 'libsqlite3.dylib' is only required if using the '-ObjC' linker flag in Xcode and can be safely removed from the PostProcessBuildPlayer_GA file if you are not using this flag._
 4. <h4>Configure the GAv3 prefab</h4>
 Click on the prefab object called __GAv3.prefab__ which you can find in _Assets/Plugins/GoogleAnalyticsV3_ in the _Project_ view. The _Inspector_ view on the right will now display a Script component attached to the prefab with several properties underneath. 
 5. Populate these fields with the correct values for your project. This will populate the object so you can use it everywhere in your project. 
