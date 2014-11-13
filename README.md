@@ -16,7 +16,7 @@ _iOS is a trademark of Apple, Inc._
 
 ####Set up:
 1. <h4>Installation</h4>
-Download __googleanalyticsv3.unitypackage__ from our [github page](https://github.com/googleanalytics/google-analytics-plugin-for-unity/raw/master/googleanalyticsV3.unitypackage) and import it into your Unity project by double clicking it .
+Download __googleanalyticsv3.unitypackage__ from our [github page](https://github.com/googleanalytics/google-analytics-plugin-for-unity/raw/master/googleanalyticsv3.unitypackage) and import it into your Unity project by double clicking it .
 2. <h4>Platform specific configuration</h4>
 &nbsp;&nbsp;&nbsp;&nbsp;__[Android Only]__
   * If your project does not already have a file called _AndroidManifest.xml_ in _&#60;YOUR PROJECT ROOT>/Assets/Plugins/Android/_,  build the project for Android and then copy the _AndroidManifest.xml_ from the _Temp/StagingArea/_ directory (it will be under the directory you chose to build in). Paste it into _&#60;YOUR PROJECT ROOT>/Assets/Plugins/Android/_
