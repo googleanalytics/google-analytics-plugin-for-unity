@@ -123,8 +123,8 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendAppView(string screenName);
   public void _sendAppView(AppViewHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendAppView(builder.GetScreenName());
   }
@@ -132,8 +132,8 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendEvent(string category, string action, string label, long value);
   public void _sendEvent(EventHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendEvent(builder.GetEventCategory(), builder.GetEventAction(), builder.GetEventLabel(), builder.GetEventValue());
   }
@@ -141,8 +141,8 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendTransaction(string transactionID, string affiliation, double revenue, double tax, double shipping, string currencyCode);
   public void _sendTransaction(TransactionHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendTransaction(builder.GetTransactionID(), builder.GetAffiliation(), builder.GetRevenue(), builder.GetTax(), builder.GetShipping(), builder.GetCurrencyCode());
   }
@@ -150,8 +150,8 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendItemWithTransaction(string transactionID, string name, string sku, string category, double price, long quantity, string currencyCode);
   public void _sendItemWithTransaction(ItemHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendItemWithTransaction(builder.GetTransactionID(), builder.GetName(), builder.GetSKU(), builder.GetCategory(), builder.GetPrice(), builder.GetQuantity(),builder.GetCurrencyCode());
   }
@@ -159,8 +159,8 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendException(string exceptionDescription, bool isFatal);
   public void _sendException(ExceptionHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendException(builder.GetExceptionDescription(), builder.IsFatal());
   }
@@ -168,8 +168,8 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendSocial(string socialNetwork, string socialAction, string targetUrl);
   public void _sendSocial(SocialHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendSocial(builder.GetSocialNetwork(), builder.GetSocialAction(), builder.GetSocialTarget());
   }
@@ -177,27 +177,27 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void sendTiming(string timingCategory,long timingInterval, string timingName, string timingLabel);
   public void _sendTiming(TimingHitBuilder builder){
-    _setCustomDimensionOnTracker(builder);
-    _setCustomMetricOnTracker(builder);
+    _buildCustomMetricsDictionary(builder);
+    _buildCustomDimensionsDictionary(builder);
     _buildCampaignParametersDictionary(builder);
     sendTiming(builder.GetTimingCategory(), builder.GetTimingInterval(), builder.GetTimingName(), builder.GetTimingLabel());
   }
 
   [DllImport("__Internal")]
-  private static extern void setCustomDimensionOnTracker(int index, string value);
-  public void _setCustomDimensionOnTracker<T>(HitBuilder<T> builder){
+  private static extern void addCustomDimensionToDictionary(int key, string value);
+  public void _buildCustomDimensionsDictionary<T>(HitBuilder<T> builder){
     foreach(KeyValuePair<int, string> entry in builder.GetCustomDimensions())
     {
-      setCustomDimensionOnTracker(entry.Key, entry.Value);
+      addCustomDimensionToDictionary(entry.Key, entry.Value);
     }
   }
 
   [DllImport("__Internal")]
-  private static extern void setCustomMetricOnTracker(int index, string value);
-  public void _setCustomMetricOnTracker<T>(HitBuilder<T> builder){
+  private static extern void addCustomMetricToDictionary(int key, string value);
+  public void _buildCustomMetricsDictionary<T>(HitBuilder<T> builder){
     foreach(KeyValuePair<int, string> entry in builder.GetCustomMetrics())
     {
-      setCustomMetricOnTracker(entry.Key, entry.Value);
+      addCustomMetricToDictionary(entry.Key, entry.Value);
     }
   }
 

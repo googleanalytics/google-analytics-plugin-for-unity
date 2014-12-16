@@ -12,7 +12,7 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-*/
+ */
 
 #import "GAIHandler.h"
 #import "GAI.h"
@@ -27,6 +27,8 @@ bool hasCampaignParameters = false;
 bool startSessionOnNextHit = false;
 bool endSessionOnNextHit = false;
 NSDictionary *campaignData;
+NSMutableDictionary *customMetrics = nil;
+NSMutableDictionary *customDimensions= nil;
 
 GAI* shared_instance() {
     return [GAI sharedInstance];
@@ -106,9 +108,9 @@ void setBool(const char * parameterName, const BOOL isValue) {
 
 void set(const char * parameterName, const char * value ) {
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-
+    
     [tracker set:[NSString stringWithUTF8String:parameterName]
-              value:[NSString stringWithUTF8String:value ]];
+           value:[NSString stringWithUTF8String:value ]];
 }
 
 NSString* get(const char * parameterName) {
@@ -116,25 +118,45 @@ NSString* get(const char * parameterName) {
     return [tracker get:[NSString stringWithUTF8String:parameterName]];
 }
 
-void setCustomDimensionOnTracker(int index, char * value) {
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:[GAIFields customDimensionForIndex:index]
-           value:[NSString stringWithUTF8String:value]];
+void addCustomDimensionToDictionary(int index, char * value){
+    if (!customDimensions) {
+        customDimensions = [[NSMutableDictionary alloc] initWithCapacity:20];
+    }
+    customDimensions[@(index)] = @(value);
 }
 
-void setCustomMetricOnTracker(int index, char * value) {
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:[GAIFields customMetricForIndex:index]
-           value:[NSString stringWithUTF8String:value]];
+void addCustomMetricToDictionary(int index, char * value){
+    if (!customMetrics) {
+        customMetrics = [[NSMutableDictionary alloc] initWithCapacity:20];
+    }
+    customMetrics[@(index)] = @(value);
+}
+
++ (void) setCustomDimensionsOnBuilder: (GAIDictionaryBuilder*)builder {
+    for(id key in customDimensions) {
+        NSString * string = [customDimensions objectForKey:key];
+        [builder set:string
+              forKey:[GAIFields customDimensionForIndex:[key intValue]]];
+    }
+    customDimensions = nil;
+}
+
++ (void) setCustomMetricsOnBuilder: (GAIDictionaryBuilder*)builder {
+    for(id key in customMetrics) {
+        NSString * string = [customMetrics objectForKey:key];
+        [builder set:string
+              forKey:[GAIFields customMetricForIndex:[key intValue]]];
+    }
+    customMetrics = nil;
 }
 
 void buildCampaignParametersDictionary(const char * source, const char * medium, const char * name, const char * content, const char * keyword) {
     campaignData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSString stringWithUTF8String:source], kGAICampaignSource,
-                                        [NSString stringWithUTF8String:medium], kGAICampaignMedium,
-                                        [NSString stringWithUTF8String:name], kGAICampaignName,
-                                        [NSString stringWithUTF8String:content], kGAICampaignContent,
-                                        [NSString stringWithUTF8String:keyword], kGAICampaignKeyword, nil];
+                    [NSString stringWithUTF8String:source], kGAICampaignSource,
+                    [NSString stringWithUTF8String:medium], kGAICampaignMedium,
+                    [NSString stringWithUTF8String:name], kGAICampaignName,
+                    [NSString stringWithUTF8String:content], kGAICampaignContent,
+                    [NSString stringWithUTF8String:keyword], kGAICampaignKeyword, nil];
     hasCampaignParameters = true;
 }
 
@@ -150,7 +172,7 @@ void buildCampaignParametersDictionary(const char * source, const char * medium,
         endSessionOnNextHit = false;
         [builder set:@"end" forKey:kGAISessionControl];
     }
-
+    
 }
 
 void sendAppView(const char * value) {
@@ -161,18 +183,23 @@ void sendAppView(const char * value) {
            value:[NSString stringWithUTF8String:value]];
     
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
     
     [tracker send:[builder build]];
 }
-     
+
 void sendEvent(const char * category, const char * action, const char * label, const long long value) {
     id tracker = [[GAI sharedInstance] defaultTracker];
-
+    
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:[NSString stringWithUTF8String:category]
-                                                                            action:[NSString stringWithUTF8String:action]
+                                                                           action:[NSString stringWithUTF8String:action]
                                                                             label:[NSString stringWithUTF8String:label]
                                                                             value:[NSNumber numberWithLongLong:value]];
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
+    
     [tracker send:[builder build]];
 }
 
@@ -186,6 +213,9 @@ void sendTransaction( const char * transactionID, const char* affiliation, const
                                                                          shipping:[NSNumber numberWithDouble:shipping]
                                                                      currencyCode:[NSString stringWithUTF8String:currencyCode]];
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
+    
     [tracker send:[builder build]];
 }
 
@@ -193,14 +223,17 @@ void sendItemWithTransaction(const char * transactionID, const char * name, cons
     id tracker = [[GAI sharedInstance] defaultTracker];
     
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createItemWithTransactionId:[NSString stringWithUTF8String:transactionID]
-                                                 name:[NSString stringWithUTF8String:name]
-                                                  sku:[NSString stringWithUTF8String:sku]
-                                             category:[NSString stringWithUTF8String:category]
-                                                price:[NSNumber numberWithDouble:price]
-                                             quantity:[NSNumber numberWithLongLong:quantity]
-                                         currencyCode:[NSString stringWithUTF8String:currencyCode]];
+                                                                                 name:[NSString stringWithUTF8String:name]
+                                                                                  sku:[NSString stringWithUTF8String:sku]
+                                                                             category:[NSString stringWithUTF8String:category]
+                                                                                price:[NSNumber numberWithDouble:price]
+                                                                             quantity:[NSNumber numberWithLongLong:quantity]
+                                                                         currencyCode:[NSString stringWithUTF8String:currencyCode]];
     
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
+    
     [tracker send:[builder build]];
 }
 
@@ -212,6 +245,9 @@ void sendException(const char * errorDescription, const bool isFatal) {
                                                                                withFatal:isFatal ? @YES : @NO];
     
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
+    
     [tracker send:[builder build]];
     
 }
@@ -224,6 +260,9 @@ void sendSocial(const char * socialNetwork, const char * socialAction, const cha
                                                                            target:[NSString stringWithUTF8String:targetUrl]];
     
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
+    
     [tracker send:[builder build]];
 }
 
@@ -235,6 +274,9 @@ void sendTiming(const char * timingCategory, const long long timingInterval, con
                                                                               name:[NSString stringWithUTF8String:name]
                                                                              label:[NSString stringWithUTF8String:label]];
     [GAIHandler addAdditionalParametersToBuilder:builder];
+    [GAIHandler setCustomDimensionsOnBuilder:builder];
+    [GAIHandler setCustomMetricsOnBuilder:builder];
+    
     [tracker send:[builder build]];
 }
 
