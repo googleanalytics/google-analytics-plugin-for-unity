@@ -31,8 +31,9 @@ using System.Collections.Generic;
   custom dimensions to the hit.
 */
 public class GoogleAnalyticsV3 : MonoBehaviour {
-
+  private string uncaughtExceptionStackTrace = null;
   private bool initialized = false;
+
   public enum DebugMode {
     ERROR,
     WARNING,
@@ -70,6 +71,12 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
   [Tooltip("If checked, the IP address of the sender will be anonymized.")]
   public bool anonymizeIP = false;
 
+  [Tooltip("Automatically report uncaught exceptions.")]
+  public bool UncaughtExceptionReporting = false;
+
+  [Tooltip("Automatically send a launch event when the game starts up.")]
+  public bool sendLaunchEvent = false;
+
   [Tooltip("If checked, hits will not be dispatched. Use for testing.")]
   public bool dryRun = false;
 
@@ -102,6 +109,35 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
 #else
   private GoogleAnalyticsMPV3 mpTracker = new GoogleAnalyticsMPV3();
 #endif
+
+  void Awake() {
+    InitializeTracker ();
+
+    if (sendLaunchEvent) {
+      LogEvent("Google Analytics", "Auto Instrumentation", "Game Launch", 0);
+    }
+
+    if (UncaughtExceptionReporting) {
+      Application.RegisterLogCallback(HandleException);
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.VERBOSE)) {
+        Debug.Log ("Enabling uncaught exception reporting.");
+      }
+    }
+  }
+
+  void Update() {
+    if (uncaughtExceptionStackTrace != null) {
+      LogException(uncaughtExceptionStackTrace, true);
+      uncaughtExceptionStackTrace = null;
+    }
+  }
+
+  private void HandleException(string condition, string stackTrace, LogType type) {
+    if (type == LogType.Exception) {
+      uncaughtExceptionStackTrace = condition + "\n" + stackTrace
+          + UnityEngine.StackTraceUtility.ExtractStackTrace();
+    }
+  }
 
   // TODO: Error checking on initialization parameters
   private void InitializeTracker() {
