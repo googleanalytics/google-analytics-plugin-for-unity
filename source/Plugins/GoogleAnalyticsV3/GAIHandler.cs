@@ -61,8 +61,8 @@ public class GAIHandler {
   }
 
   [DllImport("__Internal")]
-  private static extern void setSampleFrequency(float sampleFrequency);
-  public void _setSampleFrequency(float sampleFrequency){
+  private static extern void setSampleFrequency(int sampleFrequency);
+  public void _setSampleFrequency(int sampleFrequency){
     setSampleFrequency(sampleFrequency);
   }
 

@@ -62,8 +62,8 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
   public int dispatchPeriod = 5;
 
   [RangedTooltip("The sample rate to use. Only required for Android and" +
-      " iOS.", 0F, 100F)]
-  public float sampleFrequency = 100.0F;
+      " iOS.", 0, 100)]
+  public int sampleFrequency = 100;
 
   [Tooltip("The log level. Default is WARNING.")]
   public DebugMode logLevel = DebugMode.WARNING;
@@ -120,7 +120,7 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
     if (UncaughtExceptionReporting) {
       Application.RegisterLogCallback(HandleException);
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.VERBOSE)) {
-        Debug.Log ("Enabling uncaught exception reporting.");
+        Debug.Log("Enabling uncaught exception reporting.");
       }
     }
   }

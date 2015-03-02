@@ -31,7 +31,7 @@ public class GoogleAnalyticsiOSV3 {
   private string bundleIdentifier;
   private string appVersion;
   private int dispatchPeriod;
-  private float sampleFrequency;
+  private int sampleFrequency;
   private GoogleAnalyticsV3.DebugMode logLevel;
   private bool anonymizeIP;
   private bool dryRun;
@@ -145,7 +145,7 @@ public class GoogleAnalyticsiOSV3 {
     this.dispatchPeriod = dispatchPeriod;
   }
 
-  public void SetSampleFrequency(float sampleFrequency) {
+  public void SetSampleFrequency(int sampleFrequency) {
     this.sampleFrequency = sampleFrequency;
   }
 
