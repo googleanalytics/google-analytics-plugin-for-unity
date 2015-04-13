@@ -152,13 +152,13 @@ public class GoogleAnalyticsMPV3 {
     {
       yield return request;
       if (request.responseHeaders.ContainsKey("STATUS")) {
-        if (request.responseHeaders["STATUS"] == "HTTP/1.1 200 OK") {
+        if (request.responseHeaders["STATUS"].Contains("200 OK")) {
           if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
             Debug.Log("Successfully sent Google Analytics hit.");
           }
         } else {
           if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
-            Debug.LogWarning("Google Analytics hit request rejected with" +
+            Debug.LogWarning("Google Analytics hit request rejected with " +
                 "status code " + request.responseHeaders["STATUS"]);
           }
         }
