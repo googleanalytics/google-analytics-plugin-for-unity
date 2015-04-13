@@ -27,3 +27,4 @@ Visit [Google Analytics Developers](https://developers.google.com/analytics/) fo
   - [Knoxx-](https://github.com/Knoxx-) for fixing a typo in the Campaign tracking permissions
   - [mataneine](https://github.com/mataneine) for filtering out meta files during iOS build post processing
   - [g8minhquan](https://github.com/g8minhquan) for identifying the sqlite3.dylib library needs to be added if using the -ObjC linker flag
+  - [coquifrogs](https://github.com/coquifrogs/) for updating the HTTP status code logic
