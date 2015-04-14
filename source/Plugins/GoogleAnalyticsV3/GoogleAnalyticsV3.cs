@@ -147,6 +147,9 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
   private void InitializeTracker() {
     if (!initialized) {
       instance = this;
+
+      DontDestroyOnLoad(instance);
+
       Debug.Log("Initializing Google Analytics 0.1.");
 #if UNITY_ANDROID && !UNITY_EDITOR
       androidTracker.SetTrackingCode(androidTrackingCode);
