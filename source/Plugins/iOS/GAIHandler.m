@@ -94,11 +94,6 @@ void dispatch() {
     [[GAI sharedInstance] dispatch];
 }
 
-void setName(char *name) {
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setName:[NSString stringWithUTF8String:name]];
-}
-
 void setBool(const char * parameterName, const BOOL isValue) {
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     

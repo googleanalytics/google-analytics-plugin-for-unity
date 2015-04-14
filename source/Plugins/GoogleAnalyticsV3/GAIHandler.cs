@@ -25,12 +25,6 @@ using System.Runtime.InteropServices;
 public class GAIHandler {
 #if UNITY_IPHONE && !UNITY_EDITOR
   [DllImport("__Internal")]
-  private static extern void setName(string name);
-  public void _setName(string name){
-    setName(name);
-  }
-
-  [DllImport("__Internal")]
   private static extern void setOptOut(bool optOut);
   public void _setOptOut(bool optOut){
     setOptOut(optOut);

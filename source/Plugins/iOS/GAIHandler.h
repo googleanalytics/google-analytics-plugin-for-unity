@@ -2,7 +2,6 @@
 #import <Foundation/Foundation.h>
 #import "GAIDictionaryBuilder.h"
 
-void _setName(char *);
 void _set(char * parameterName, char * value);
 char* _get(char * parameterName);
 void _send(NSDictionary * parameters);
