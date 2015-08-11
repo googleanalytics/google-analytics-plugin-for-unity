@@ -175,7 +175,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
           hashMap.GetRawClass(), "put",
           "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
       object[] args = new object[2];
-      foreach (KeyValuePair<AndroidJavaObject, string> kvp in parameters) {
+      foreach (var kvp in parameters) {
         using (AndroidJavaObject k = kvp.Key) {
           using (AndroidJavaObject v = new AndroidJavaObject(
               "java.lang.String", kvp.Value)) {
@@ -211,12 +211,12 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
     Dictionary<AndroidJavaObject, string> parameters =
         new Dictionary<AndroidJavaObject, string>();
     AndroidJavaObject fieldName;
-    foreach (KeyValuePair<int, string> entry in builder.GetCustomDimensions()) {
+    foreach (var entry in builder.GetCustomDimensions()) {
       fieldName = analyticsTrackingFields.CallStatic<AndroidJavaObject>(
           "customDimension", entry.Key);
       parameters.Add(fieldName, entry.Value);
     }
-    foreach (KeyValuePair<int, string> entry in builder.GetCustomMetrics()) {
+    foreach (var entry in builder.GetCustomMetrics()) {
       fieldName = analyticsTrackingFields.CallStatic<AndroidJavaObject>(
           "customMetric", entry.Key);
       parameters.Add(fieldName, entry.Value);

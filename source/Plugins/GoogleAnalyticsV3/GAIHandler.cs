@@ -180,7 +180,7 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void addCustomDimensionToDictionary(int key, string value);
   public void _buildCustomDimensionsDictionary<T>(HitBuilder<T> builder){
-    foreach(KeyValuePair<int, string> entry in builder.GetCustomDimensions())
+    foreach(var entry in builder.GetCustomDimensions())
     {
       addCustomDimensionToDictionary(entry.Key, entry.Value);
     }
@@ -189,7 +189,7 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void addCustomMetricToDictionary(int key, string value);
   public void _buildCustomMetricsDictionary<T>(HitBuilder<T> builder){
-    foreach(KeyValuePair<int, string> entry in builder.GetCustomMetrics())
+    foreach(var entry in builder.GetCustomMetrics())
     {
       addCustomMetricToDictionary(entry.Key, entry.Value);
     }

@@ -18,67 +18,80 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class TimingHitBuilder : HitBuilder<TimingHitBuilder> {
+public class TimingHitBuilder : HitBuilder
+{
+	private string timingCategory = "";
+	private long timingInterval;
+	private string timingName = "";
+	private string timingLabel = "";
 
-  private string timingCategory = "";
-  private long timingInterval;
-  private string timingName = "";
-  private string timingLabel = "";
+	public string GetTimingCategory()
+	{
+		return timingCategory;
+	}
 
-  public string GetTimingCategory(){
-    return timingCategory;
-  }
+	public TimingHitBuilder SetTimingCategory(string timingCategory)
+	{
+		if(timingCategory != null)
+		{
+			this.timingCategory = timingCategory;
+		}
+		return this;
+	}
 
-  public TimingHitBuilder SetTimingCategory(string timingCategory) {
-    if(timingCategory != null){
-      this.timingCategory = timingCategory;
-    }
-    return this;
-  }
+	public long GetTimingInterval()
+	{
+		return timingInterval;
+	}
 
-  public long GetTimingInterval(){
-    return timingInterval;
-  }
+	public TimingHitBuilder SetTimingInterval(long timingInterval)
+	{
+		this.timingInterval = timingInterval;
+		return this;
+	}
 
-  public TimingHitBuilder SetTimingInterval(long timingInterval) {
-    this.timingInterval = timingInterval;
-    return this;
-  }
+	public string GetTimingName()
+	{
+		return timingName;
+	}
 
-  public string GetTimingName(){
-    return timingName;
-  }
+	public TimingHitBuilder SetTimingName(string timingName)
+	{
+		if(timingName != null)
+		{
+			this.timingName = timingName;
+		}
+		return this;
+	}
 
-  public TimingHitBuilder SetTimingName(string timingName) {
-    if(timingName != null){
-      this.timingName = timingName;
-    }
-    return this;
-  }
+	public string GetTimingLabel()
+	{
+		return timingLabel;
+	}
 
-  public string GetTimingLabel(){
-    return timingLabel;
-  }
+	public TimingHitBuilder SetTimingLabel(string timingLabel)
+	{
+		if(timingLabel != null)
+		{
+			this.timingLabel = timingLabel;
+		}
+		return this;
+	}
 
-  public TimingHitBuilder SetTimingLabel(string timingLabel) {
-    if(timingLabel != null){
-      this.timingLabel = timingLabel;
-    }
-    return this;
-  }
+	public override bool IsValid
+	{
+		get
+		{
+			if(String.IsNullOrEmpty(timingCategory))
+			{
+				Debug.LogError("No timing category provided - Timing hit cannot be sent");
+				return false;
+			}
 
-  public override TimingHitBuilder GetThis(){
-    return this;
-  }
+			if(timingInterval == 0L)
+				Debug.Log("Interval in timing hit is 0.");
 
-  public override TimingHitBuilder Validate(){
-    if(String.IsNullOrEmpty(timingCategory)){
-      Debug.LogError("No timing category provided - Timing hit cannot be sent");
-      return null;
-    }
-    if(timingInterval == 0L){
-      Debug.Log("Interval in timing hit is 0.");
-    }
-    return this;
-  }
+			return true;
+		}
+	}
 }
