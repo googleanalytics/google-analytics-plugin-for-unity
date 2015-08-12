@@ -103,9 +103,7 @@ public class GoogleAnalyticsV3 : MonoBehaviour
 	[Tooltip("The amount of time in seconds your application can stay in the background before the session is ended. Default is 30 minutes (1800 seconds). A value of -1 will disable session management.")]
 	public int sessionTimeout = 1800;
 
-	[Tooltip("Support only standard currency symbal")]
-	public string currencySymbol = "USD";
-
+	public readonly static string currencySymbol = "USD";
 	public readonly static string EVENT_HIT = "createEvent";
 	public readonly static string APP_VIEW = "createAppView";
 	public readonly static string SET = "set";
@@ -157,11 +155,10 @@ public class GoogleAnalyticsV3 : MonoBehaviour
 
 	private void HandleException(string condition,string stackTrace,LogType type)
 	{
-		if(type == LogType.Exception)
-		{
-			uncaughtExceptionStackTrace = condition + "\n" + stackTrace
-          + UnityEngine.StackTraceUtility.ExtractStackTrace();
-		}
+		if(type != LogType.Exception)
+			return;
+
+		uncaughtExceptionStackTrace = condition + "\n" + stackTrace + UnityEngine.StackTraceUtility.ExtractStackTrace();
 	}
 
 	// TODO: Error checking on initialization parameters
@@ -191,7 +188,6 @@ public class GoogleAnalyticsV3 : MonoBehaviour
 
 		initialized = true;
 		SetOnTracker(Fields.DEVELOPER_ID,"GbOCSs");
-		SetOnTracker(Fields.CLIENT_ID,SystemInfo.deviceUniqueIdentifier);
 	}
 
 	public void SetAppLevelOptOut(bool optOut)
@@ -247,13 +243,10 @@ public class GoogleAnalyticsV3 : MonoBehaviour
 	{
 		InitializeTracker();
 		if(builder.Validate() == null)
-		{
 			return;
-		}
+
 		if(GoogleAnalyticsV3.belowThreshold(logLevel,GoogleAnalyticsV3.DebugMode.VERBOSE))
-		{
 			Debug.Log("Logging screen.");
-		}
 
 		tracker.LogScreen(builder);
 	}
@@ -363,10 +356,9 @@ public class GoogleAnalyticsV3 : MonoBehaviour
 	public void LogException(ExceptionHitBuilder builder)
 	{
 		InitializeTracker();
-		if(builder.Validate() == null)
-		{
+		if(!builder.IsValid)
 			return;
-		}
+
 		if(GoogleAnalyticsV3.belowThreshold(logLevel,GoogleAnalyticsV3.DebugMode.VERBOSE))
 		{
 			Debug.Log("Logging exception.");

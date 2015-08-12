@@ -25,7 +25,7 @@ using System.Collections.Generic;
 */
 public class GoogleAnalyticsiOSV3 {
 
-#if UNITY_IPHONE && !UNITY_EDITOR
+#if UNITY_IPHONE
   private string trackingCode;
   private string appName;
   private string bundleIdentifier;
@@ -121,7 +121,7 @@ public class GoogleAnalyticsiOSV3 {
     handler._setOptOut(optOut);
   }
 
-  public void SetTrackerVal(Field fieldName, object value){
+  public void SetTrackerVal(string fieldName, object value){
     handler._set(fieldName.ToString(), value);
   }
 

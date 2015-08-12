@@ -29,6 +29,9 @@ public abstract class HitBuilder
 	public readonly Dictionary<int,string> CustomDimensions	= new Dictionary<int,string>();
 	public readonly Dictionary<int,string> CustomMetrics	= new Dictionary<int,string>();
 
+	public Dictionary<int,string> GetCustomDimensions() { return CustomDimensions; }
+	public Dictionary<int,string> GetCustomMetrics() { return CustomMetrics; }
+
 	public string CampaignName = "";
 	public string CampaignSource = "";
 	public string CampaignMedium = "";
