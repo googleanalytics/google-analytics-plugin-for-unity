@@ -54,8 +54,8 @@ public class GoogleAnalyticsV3 : MonoBehaviour
 			instance	= GameObject.FindObjectOfType<GoogleAnalyticsV3>();
 			if(instance == null)
 			{
-				var prefab	= Resources.FindObjectsOfTypeAll<GoogleAnalyticsV3>().FirstOrDefault();
-				instance	= GameObject.Instantiate(prefab).GetComponent<GoogleAnalyticsV3>();
+				instance	= Resources.LoadAll<GoogleAnalyticsV3>("").FirstOrDefault();
+				instance	= GameObject.Instantiate(instance.gameObject).GetComponent<GoogleAnalyticsV3>();
 			}
 		}
 
