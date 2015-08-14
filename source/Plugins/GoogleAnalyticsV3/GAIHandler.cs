@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
   Wrapper for Objective-C iOS SDK
 */
 public class GAIHandler {
-#if UNITY_IPHONE && !UNITY_EDITOR
+#if UNITY_IPHONE
   [DllImport("__Internal")]
   private static extern void setOptOut(bool optOut);
   public void _setOptOut(bool optOut){
@@ -179,8 +179,8 @@ public class GAIHandler {
 
   [DllImport("__Internal")]
   private static extern void addCustomDimensionToDictionary(int key, string value);
-  public void _buildCustomDimensionsDictionary<T>(HitBuilder<T> builder){
-    foreach(KeyValuePair<int, string> entry in builder.GetCustomDimensions())
+  public void _buildCustomDimensionsDictionary(HitBuilder builder){
+    foreach(var entry in builder.GetCustomDimensions())
     {
       addCustomDimensionToDictionary(entry.Key, entry.Value);
     }
@@ -188,8 +188,8 @@ public class GAIHandler {
 
   [DllImport("__Internal")]
   private static extern void addCustomMetricToDictionary(int key, string value);
-  public void _buildCustomMetricsDictionary<T>(HitBuilder<T> builder){
-    foreach(KeyValuePair<int, string> entry in builder.GetCustomMetrics())
+  public void _buildCustomMetricsDictionary(HitBuilder builder){
+    foreach(var entry in builder.GetCustomMetrics())
     {
       addCustomMetricToDictionary(entry.Key, entry.Value);
     }
@@ -197,7 +197,7 @@ public class GAIHandler {
 
   [DllImport("__Internal")]
   private static extern void buildCampaignParametersDictionary(string source, string medium, string name, string content, string keyword);
-  public void _buildCampaignParametersDictionary<T>(HitBuilder<T> builder){
+  public void _buildCampaignParametersDictionary(HitBuilder builder){
     if(!String.IsNullOrEmpty(builder.GetCampaignSource())){
       buildCampaignParametersDictionary(builder.GetCampaignSource(),
           builder.GetCampaignMedium() != null ? builder.GetCampaignMedium() : "",

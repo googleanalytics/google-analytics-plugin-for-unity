@@ -22,129 +22,31 @@ using System.Collections.Generic;
   Base class for building hits. This class stores data which can be sent with
   any hit type but cannot be sent independent of other hits.
  */
-public abstract class HitBuilder<T> {
+public abstract class HitBuilder
+{
+	public abstract bool IsValid { get; }
 
-  private Dictionary<int, string> customDimensions =
-      new Dictionary<int,string>();
-  private Dictionary<int, string> customMetrics = new Dictionary<int,string>();
+	public readonly Dictionary<int,string> CustomDimensions	= new Dictionary<int,string>();
+	public readonly Dictionary<int,string> CustomMetrics	= new Dictionary<int,string>();
 
-  private string campaignName = "";
-  private string campaignSource = "";
-  private string campaignMedium = "";
-  private string campaignKeyword = "";
-  private string campaignContent = "";
-  private string campaignID = "";
-  private string gclid = "";
-  private string dclid = "";
+	public Dictionary<int,string> GetCustomDimensions() { return CustomDimensions; }
+	public Dictionary<int,string> GetCustomMetrics() { return CustomMetrics; }
 
-  public abstract T GetThis();
-  public abstract T Validate();
+	public string CampaignName = "";
+	public string CampaignSource = "";
+	public string CampaignMedium = "";
+	public string CampaignKeyword = "";
+	public string CampaignContent = "";
+	public string CampaignID = "";
+	public string gclid = "";
+	public string dclid = "";
 
-  public T SetCustomDimension(int dimensionNumber, string value) {
-    customDimensions.Add(dimensionNumber, value);
-    return GetThis();
-  }
-
-  public Dictionary<int, string> GetCustomDimensions() {
-    return customDimensions;
-  }
-
-  public T SetCustomMetric(int metricNumber, string value) {
-    customMetrics.Add(metricNumber, value);
-    return GetThis();
-  }
-
-  public Dictionary<int, string> GetCustomMetrics() {
-    return customMetrics;
-  }
-
-  public string GetCampaignName() {
-    return campaignName;
-  }
-
-  public T SetCampaignName(string campaignName) {
-    if (campaignName != null) {
-      this.campaignName = campaignName;
-    }
-    return GetThis();
-  }
-
-  public string GetCampaignSource() {
-    return campaignSource;
-  }
-
-  public T SetCampaignSource(string campaignSource) {
-    if (campaignSource != null) {
-      this.campaignSource = campaignSource;
-    } else {
-      Debug.Log("Campaign source cannot be null or empty");
-    }
-    return GetThis();
-  }
-
-  public string GetCampaignMedium() {
-    return campaignMedium;
-  }
-
-  public T SetCampaignMedium(string campaignMedium) {
-    if (campaignMedium != null) {
-      this.campaignMedium = campaignMedium;
-    }
-    return GetThis();
-  }
-
-  public string GetCampaignKeyword() {
-    return campaignKeyword;
-  }
-
-  public T SetCampaignKeyword(string campaignKeyword) {
-    if (campaignKeyword != null) {
-      this.campaignKeyword = campaignKeyword;
-    }
-    return GetThis();
-  }
-
-  public string GetCampaignContent() {
-    return campaignContent;
-  }
-
-  public T SetCampaignContent(string campaignContent) {
-    if (campaignContent != null) {
-      this.campaignContent = campaignContent;
-    }
-    return GetThis();
-  }
-
-  public string GetCampaignID() {
-    return campaignID;
-  }
-
-  public T SetCampaignID(string campaignID) {
-    if (campaignID != null) {
-      this.campaignID = campaignID;
-    }
-    return GetThis();
-  }
-
-  public string GetGclid() {
-    return gclid;
-  }
-
-  public T SetGclid(string gclid) {
-    if (gclid != null) {
-      this.gclid = gclid;
-    }
-    return GetThis();
-  }
-
-  public string GetDclid() {
-    return dclid;
-  }
-
-  public T SetDclid(string dclid) {
-    if (dclid != null) {
-      this.dclid = dclid;
-    }
-    return GetThis();
-  }
+	public string GetCampaignName() { return CampaignName; }
+	public string GetCampaignSource() { return CampaignSource; }
+	public string GetCampaignMedium() { return CampaignMedium; }
+	public string GetCampaignKeyword() { return CampaignKeyword; }
+	public string GetCampaignContent() { return CampaignContent; }
+	public string GetCampaignID() { return CampaignID; }
+	public string GetGclid() { return gclid; }
+	public string GetDclid() { return dclid; }
 }

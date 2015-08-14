@@ -19,62 +19,77 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class SocialHitBuilder : HitBuilder<SocialHitBuilder> {
+public class SocialHitBuilder : HitBuilder
+{
+	private string socialNetwork = "";
+	private string socialAction = "";
+	private string socialTarget = "";
 
-  private string socialNetwork = "";
-  private string socialAction = "";
-  private string socialTarget = "";
+	public string GetSocialNetwork()
+	{
+		return socialNetwork;
+	}
 
-  public string GetSocialNetwork(){
-    return socialNetwork;
-  }
+	public SocialHitBuilder SetSocialNetwork(string socialNetwork)
+	{
+		if(socialNetwork != null)
+		{
+			this.socialNetwork = socialNetwork;
+		}
+		return this;
+	}
 
-  public SocialHitBuilder SetSocialNetwork(string socialNetwork) {
-    if(socialNetwork != null){
-      this.socialNetwork = socialNetwork;
-    }
-    return this;
-  }
+	public string GetSocialAction()
+	{
+		return socialAction;
+	}
 
-  public string GetSocialAction(){
-    return socialAction;
-  }
+	public SocialHitBuilder SetSocialAction(string socialAction)
+	{
+		if(socialAction != null)
+		{
+			this.socialAction = socialAction;
+		}
+		return this;
+	}
 
-  public SocialHitBuilder SetSocialAction(string socialAction) {
-    if(socialAction != null){
-      this.socialAction = socialAction;
-    }
-    return this;
-  }
+	public string GetSocialTarget()
+	{
+		return socialTarget;
+	}
 
-  public string GetSocialTarget(){
-    return socialTarget;
-  }
+	public SocialHitBuilder SetSocialTarget(string socialTarget)
+	{
+		if(socialTarget != null)
+		{
+			this.socialTarget = socialTarget;
+		}
+		return this;
+	}
 
-  public SocialHitBuilder SetSocialTarget(string socialTarget) {
-    if(socialTarget != null){
-      this.socialTarget = socialTarget;
-    }
-    return this;
-  }
+	public override bool IsValid
+	{
+		get
+		{
+			if(String.IsNullOrEmpty(socialNetwork))
+			{
+				Debug.LogError("No social network provided - Social hit cannot be sent");
+				return false;
+			}
+			
+			if(String.IsNullOrEmpty(socialAction))
+			{
+				Debug.LogError("No social action provided - Social hit cannot be sent");
+				return false;
+			}
 
-  public override SocialHitBuilder GetThis(){
-    return this;
-  }
+			if(String.IsNullOrEmpty(socialTarget))
+			{
+				Debug.LogError("No social target provided - Social hit cannot be sent");
+				return false;
+			}
 
-  public override SocialHitBuilder Validate(){
-    if(String.IsNullOrEmpty(socialNetwork)){
-      Debug.LogError("No social network provided - Social hit cannot be sent");
-      return null;
-    }
-    if(String.IsNullOrEmpty(socialAction)){
-      Debug.LogError("No social action provided - Social hit cannot be sent");
-      return null;
-    }
-    if(String.IsNullOrEmpty(socialTarget)){
-      Debug.LogError("No social target provided - Social hit cannot be sent");
-      return null;
-    }
-    return this;
-  }
+			return true;
+		}
+	}
 }

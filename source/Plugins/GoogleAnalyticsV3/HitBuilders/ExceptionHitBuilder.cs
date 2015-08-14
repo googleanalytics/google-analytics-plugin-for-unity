@@ -19,36 +19,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class ExceptionHitBuilder : HitBuilder<ExceptionHitBuilder> {
+public class ExceptionHitBuilder : HitBuilder
+{
+	private string exceptionDescription  = "";
+	private bool fatal = false;
 
-  private string exceptionDescription  = "";
-  private bool fatal = false;
+	public string GetExceptionDescription()
+	{
+		return exceptionDescription;
+	}
 
-  public string GetExceptionDescription(){
-    return exceptionDescription;
-  }
+	public ExceptionHitBuilder SetExceptionDescription(string exceptionDescription)
+	{
+		if(exceptionDescription != null)
+		{
+			this.exceptionDescription = exceptionDescription;
+		}
+		return this;
+	}
 
-  public ExceptionHitBuilder SetExceptionDescription(string exceptionDescription) {
-    if(exceptionDescription != null){
-      this.exceptionDescription = exceptionDescription;
-    }
-    return this;
-  }
+	public bool IsFatal()
+	{
+		return fatal;
+	}
 
-  public bool IsFatal(){
-    return fatal;
-  }
+	public ExceptionHitBuilder SetFatal(bool fatal)
+	{
+		this.fatal = fatal;
+		return this;
+	}
 
-  public ExceptionHitBuilder SetFatal(bool fatal) {
-    this.fatal = fatal;
-    return this;
-  }
-
-  public override ExceptionHitBuilder GetThis(){
-    return this;
-  }
-
-  public override ExceptionHitBuilder Validate(){
-    return this;
-  }
+	public override bool IsValid { get { return true; } }
 }

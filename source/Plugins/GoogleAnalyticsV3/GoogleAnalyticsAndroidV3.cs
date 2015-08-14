@@ -25,7 +25,7 @@ using System.Collections.Generic;
   appropriate methods in this class if the application is built for Android.
 */
 public class GoogleAnalyticsAndroidV3 : IDisposable {
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID
   private string trackingCode;
   private string appVersion;
   private string appName;
@@ -84,7 +84,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
     }
   }
 
-  internal void SetTrackerVal(Field fieldName, object value) {
+  internal void SetTrackerVal(string fieldName,object value) {
     object[] args = new object[] { fieldName.ToString(), value };
     tracker.Call(GoogleAnalyticsV3.SET, args);
   }
@@ -175,7 +175,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
           hashMap.GetRawClass(), "put",
           "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
       object[] args = new object[2];
-      foreach (KeyValuePair<AndroidJavaObject, string> kvp in parameters) {
+      foreach (var kvp in parameters) {
         using (AndroidJavaObject k = kvp.Key) {
           using (AndroidJavaObject v = new AndroidJavaObject(
               "java.lang.String", kvp.Value)) {
@@ -206,17 +206,16 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
     }
   }
 
-  private Dictionary<AndroidJavaObject, string>
-      AddCustomVariablesAndCampaignParameters<T>(HitBuilder<T> builder) {
+  private Dictionary<AndroidJavaObject,string> AddCustomVariablesAndCampaignParameters(HitBuilder builder) {
     Dictionary<AndroidJavaObject, string> parameters =
         new Dictionary<AndroidJavaObject, string>();
     AndroidJavaObject fieldName;
-    foreach (KeyValuePair<int, string> entry in builder.GetCustomDimensions()) {
+    foreach (var entry in builder.GetCustomDimensions()) {
       fieldName = analyticsTrackingFields.CallStatic<AndroidJavaObject>(
           "customDimension", entry.Key);
       parameters.Add(fieldName, entry.Value);
     }
-    foreach (KeyValuePair<int, string> entry in builder.GetCustomMetrics()) {
+    foreach (var entry in builder.GetCustomMetrics()) {
       fieldName = analyticsTrackingFields.CallStatic<AndroidJavaObject>(
           "customMetric", entry.Key);
       parameters.Add(fieldName, entry.Value);
@@ -283,8 +282,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
       tracker.Call (GoogleAnalyticsV3.SET, args);
     }
 
-    Dictionary<AndroidJavaObject, string> parameters =
-        AddCustomVariablesAndCampaignParameters(builder);
+    Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
     if (parameters != null) {
       object map = BuildMap(GoogleAnalyticsV3.APP_VIEW, parameters);
       tracker.Call(GoogleAnalyticsV3.SEND, map);
@@ -304,8 +302,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
       args[3] = valueObj;
 
       object map;
-      Dictionary<AndroidJavaObject, string> parameters =
-          AddCustomVariablesAndCampaignParameters(builder);
+      Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
       if (parameters != null) {
         map = BuildMap(GoogleAnalyticsV3.EVENT_HIT, args, parameters);
       } else {
@@ -336,8 +333,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
         args[5] = builder.GetCurrencyCode();
     }
     object map;
-    Dictionary<AndroidJavaObject, string> parameters =
-        AddCustomVariablesAndCampaignParameters(builder);
+    Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
     if (parameters != null){
       map = BuildMap(GoogleAnalyticsV3.TRANSACTION_HIT, args, parameters);
     } else {
@@ -362,8 +358,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
     args[5] = new AndroidJavaObject("java.lang.Long", builder.GetQuantity());
 
     object map;
-    Dictionary<AndroidJavaObject, string> parameters =
-        AddCustomVariablesAndCampaignParameters(builder);
+    Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
     if (parameters != null) {
       map = BuildMap(GoogleAnalyticsV3.ITEM_HIT, args, parameters);
     } else {
@@ -377,8 +372,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
       args[0] = builder.GetExceptionDescription();
       args[1] = new AndroidJavaObject("java.lang.Boolean", builder.IsFatal());
       object map;
-      Dictionary<AndroidJavaObject, string> parameters =
-          AddCustomVariablesAndCampaignParameters(builder);
+      Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
       if (parameters != null) {
         map = BuildMap(GoogleAnalyticsV3.EXCEPTION_HIT, args, parameters);
       } else {
@@ -398,8 +392,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
     args[2] = builder.GetSocialTarget();
 
     object map;
-    Dictionary<AndroidJavaObject, string> parameters =
-        AddCustomVariablesAndCampaignParameters(builder);
+    Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
     if (parameters != null) {
       map = BuildMap(GoogleAnalyticsV3.SOCIAL_HIT, args, parameters);
     } else {
@@ -417,8 +410,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
       args[2] = builder.GetTimingName();
       args[3] = builder.GetTimingLabel();
       object map;
-      Dictionary<AndroidJavaObject, string> parameters =
-          AddCustomVariablesAndCampaignParameters(builder);
+      Dictionary<AndroidJavaObject, string> parameters = AddCustomVariablesAndCampaignParameters(builder);
       if (parameters != null) {
         map = BuildMap(GoogleAnalyticsV3.TIMING_HIT, args, parameters);
       } else {
@@ -465,6 +457,7 @@ public class GoogleAnalyticsAndroidV3 : IDisposable {
   }
 
 #endif
+
   public void Dispose()
   {
 #if UNITY_ANDROID && !UNITY_EDITOR
