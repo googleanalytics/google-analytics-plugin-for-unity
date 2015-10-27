@@ -47,6 +47,7 @@ public class GoogleAnalyticsMPV3 {
   private bool startSessionOnNextHit = false;
   private bool endSessionOnNextHit = false;
   private bool trackingCodeSet = true;
+  private Dictionary<int, int> exceptionCountsByHash = new Dictionary<int, int>();
 
   public void InitializeTracker() {
     if(String.IsNullOrEmpty(trackingCode)){
@@ -338,6 +339,16 @@ public class GoogleAnalyticsMPV3 {
   }
 
   public void LogException(ExceptionHitBuilder builder) {
+    // We log a particular exception every power of 10 occurrences.
+    int hash = builder.GetExceptionDescription().GetHashCode();
+    if (!exceptionCountsByHash.ContainsKey(hash)) {
+      exceptionCountsByHash.Add(hash, 0);
+    }
+    int count = ++exceptionCountsByHash[hash];
+    float countLog10 = Mathf.Log10(count);
+    if (Mathf.Floor(countLog10) != countLog10) {
+      return;
+    }
 
     trackerValues[Fields.EX_DESCRIPTION] = null;
     trackerValues[Fields.EX_FATAL] = null;
