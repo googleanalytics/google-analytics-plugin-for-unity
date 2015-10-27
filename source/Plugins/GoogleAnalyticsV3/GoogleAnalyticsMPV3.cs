@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 /*
   GoogleAnalyticsMPV3 handles building hits using the Measurement Protocol.
@@ -47,6 +48,8 @@ public class GoogleAnalyticsMPV3 {
   private bool startSessionOnNextHit = false;
   private bool endSessionOnNextHit = false;
   private bool trackingCodeSet = true;
+  private int nextCoroutineId = 0;
+  private Dictionary<int, IEnumerator> coroutinesById = new Dictionary<int, IEnumerator>();
 
   public void InitializeTracker() {
     if(String.IsNullOrEmpty(trackingCode)){
@@ -140,17 +143,22 @@ public class GoogleAnalyticsMPV3 {
     if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.VERBOSE)) {
       Debug.Log(newUrl);
     }
-    GoogleAnalyticsV3.getInstance().StartCoroutine(this.HandleWWW(new WWW(newUrl)));
+    var id = nextCoroutineId++;
+    var coroutine = this.HandleWWW(new WWW(newUrl), id);
+    coroutinesById.Add(id, coroutine);
+    GoogleAnalyticsV3.getInstance().StartCoroutine(coroutine);
   }
 
   /*
     Make request using yield and coroutine to prevent lock up waiting on request to return.
   */
-  public IEnumerator HandleWWW(WWW request)
+  public IEnumerator HandleWWW(WWW request, int coroutineId)
   {
-    while (!request.isDone)
+    // Normally a WWW request yielded to Unity will be done on resume.  However our request
+    // flush mechanism behaves differently, so yield repeatedly until done.
+    while (!request.isDone) { yield return request; }
+
     {
-      yield return request;
       if (request.responseHeaders.ContainsKey("STATUS")) {
         if (request.responseHeaders["STATUS"].Contains("200 OK")) {
           if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
@@ -169,6 +177,33 @@ public class GoogleAnalyticsMPV3 {
         }
       }
     }
+    coroutinesById.Remove(coroutineId);
+  }
+
+  public bool FlushRequests(int timeoutMilliseconds) {
+    var timer = System.Diagnostics.Stopwatch.StartNew();
+    int initialCount = coroutinesById.Count;
+    while (coroutinesById.Count > 0 && timer.ElapsedMilliseconds < timeoutMilliseconds) {
+      // Advance each coroutine by one step.  The coroutine is expected to yield the
+      // WWW request until done.  Finally they remove themselves from the dictionary.
+      foreach (var coroutine in coroutinesById.Values.ToArray()) {
+        coroutine.MoveNext();
+      }
+      System.Threading.Thread.Sleep(1);
+    }
+    if (coroutinesById.Count > 0) {
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
+        Debug.LogWarningFormat("Request flush timeout exceeded, {0} requests pending.",
+                               coroutinesById.Count);
+      }
+      return false;
+    } else if (initialCount > 0) {
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
+        Debug.LogFormat("Flushed {0} requests in {1} milliseconds.",
+                        initialCount, timer.ElapsedMilliseconds);
+      }
+    }
+    return true;
   }
 
   private string AddRequiredMPParameter(Field parameter, object value) {
