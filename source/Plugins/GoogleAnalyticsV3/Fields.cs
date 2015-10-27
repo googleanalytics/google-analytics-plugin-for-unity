@@ -40,6 +40,7 @@ public class Fields {
   public readonly static Field SCREEN_COLORS = new Field("&sd");
   public readonly static Field SCREEN_RESOLUTION = new Field("&sr");
   public readonly static Field VIEWPORT_SIZE = new Field("&vp");
+  public readonly static Field USER_AGENT_OVERRIDE = new Field("&ua");
 
   // Application
   public readonly static Field APP_NAME = new Field("&an");
