@@ -137,7 +137,7 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
   }
 
   private void HandleException(string condition, string stackTrace, LogType type) {
-    if (type == LogType.Exception) {
+    if (type == LogType.Exception || type == LogType.Assert) {
       uncaughtExceptionStackTrace = condition + "\n" + stackTrace
           + UnityEngine.StackTraceUtility.ExtractStackTrace();
     }
