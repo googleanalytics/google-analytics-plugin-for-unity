@@ -7,15 +7,15 @@ _Unity is a trademark of Unity Technologies._ This project is not in any way end
 
 _iOS is a trademark of Apple, Inc._
 
-##Google Analytics V3 Plugin Documentation
+##Google Analytics Plugin Documentation
 
-Visit [Google Analytics Developers](https://developers.google.com/analytics/) for the latest documentation on the [Google Analytics Plugin for Unity](https://developers.google.com/analytics/devguides/collection/unity/v3/).
+Visit [Google Analytics Developers](https://developers.google.com/analytics/) for the latest documentation on the [Google Analytics Plugin for Unity](https://developers.google.com/analytics/devguides/collection/unity/).
 
 
 ###Quick links
-  - [Dev Guide](https://developers.google.com/analytics/devguides/collection/unity/v3/devguide) - Learn how to setup, configure and get started with the Google Analytics Plugin for Unity.
-  - [API Reference](https://developers.google.com/analytics/devguides/collection/unity/v3/reference) - Describes how to send data and lists all of the methods for the Google Analytics Plugin for Unity.
-  - [Troubleshooting](https://developers.google.com/analytics/devguides/collection/unity/v3/troubleshoot) - Tips on debugging and troubleshooting problems with the Google Analytics Plugin for Unity.
+  - [Dev Guide](https://developers.google.com/analytics/devguides/collection/unity/devguide) - Learn how to setup, configure and get started with the Google Analytics Plugin for Unity.
+  - [API Reference](https://developers.google.com/analytics/devguides/collection/unity/reference) - Describes how to send data and lists all of the methods for the Google Analytics Plugin for Unity.
+  - [Troubleshooting](https://developers.google.com/analytics/devguides/collection/unity/troubleshoot) - Tips on debugging and troubleshooting problems with the Google Analytics Plugin for Unity.
 
 
 ###Related resources
