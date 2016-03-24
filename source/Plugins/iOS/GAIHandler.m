@@ -51,6 +51,10 @@ void anonymizeIP(){
     [tracker set:kGAIAnonymizeIp value:@"1"];
 }
 
+void enableIDFACollection(){
+    [[GAI sharedInstance] defaultTracker].allowIDFACollection = YES;
+}
+
 void setSampleFrequency(int sampleFrequency) {
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAISampleRate value:[@(sampleFrequency) stringValue]];

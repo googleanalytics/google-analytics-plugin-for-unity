@@ -8,6 +8,8 @@ void _send(NSDictionary * parameters);
 void _setProductName(char * name);
 void _setProductVersion(char * version);
 void _setOptOut(bool optOut);
+void _anonymizeIP();
+void _enableIDFACollection();
 void _setDispatchInterval(int time);
 void _setTrackUncaughtExceptions(bool trackUncaughtExceptions);
 void _setDryRun(bool dryRun);
