@@ -50,7 +50,9 @@ public class GoogleAnalyticsMPV3 {
 
   public void InitializeTracker() {
     if(String.IsNullOrEmpty(trackingCode)){
-      Debug.Log("No tracking code set for 'Other' platforms - hits will not be set");
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
+        Debug.LogWarning("No tracking code set for 'Other' platforms - hits will not be set");
+      }
       trackingCodeSet = false;
       return;
     }
@@ -87,7 +89,7 @@ public class GoogleAnalyticsMPV3 {
       }
     } catch (Exception) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
-        Debug.Log("Error building url.");
+        Debug.LogWarning("Error building url.");
       }
     }
   }
@@ -118,13 +120,13 @@ public class GoogleAnalyticsMPV3 {
   private void SendGaHitWithMeasurementProtocol(string url) {
     if (String.IsNullOrEmpty(url)) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
-        Debug.Log("No tracking code set for 'Other' platforms - hit will not be sent.");
+        Debug.LogWarning("No tracking code set for 'Other' platforms - hit will not be sent.");
       }
       return;
     }
     if (dryRun || optOut) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
-        Debug.Log("Dry run or opt out enabled - hits will not be sent.");
+        Debug.LogWarning("Dry run or opt out enabled - hits will not be sent.");
       }
       return;
     }
@@ -153,7 +155,7 @@ public class GoogleAnalyticsMPV3 {
       yield return request;
       if (request.responseHeaders.ContainsKey("STATUS")) {
         if (request.responseHeaders["STATUS"].Contains("200 OK")) {
-          if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
+          if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.VERBOSE)) {
             Debug.Log("Successfully sent Google Analytics hit.");
           }
         } else {

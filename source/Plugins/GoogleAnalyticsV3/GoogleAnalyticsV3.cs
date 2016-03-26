@@ -150,7 +150,9 @@ public class GoogleAnalyticsV3 : MonoBehaviour {
 
       DontDestroyOnLoad(instance);
 
-      Debug.Log("Initializing Google Analytics 0.1.");
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.INFO)) {
+        Debug.Log("Initializing Google Analytics 0.1.");
+      }
 #if UNITY_ANDROID && !UNITY_EDITOR
       androidTracker.SetTrackingCode(androidTrackingCode);
       androidTracker.SetAppName(productName);
