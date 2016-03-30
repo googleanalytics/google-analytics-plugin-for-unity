@@ -119,7 +119,7 @@ public class GoogleAnalyticsV4 : MonoBehaviour {
     }
 
     if (UncaughtExceptionReporting) {
-#if UNITY_5_0
+#if UNITY_5
       Application.logMessageReceived += HandleException;
 #else
       Application.RegisterLogCallback (HandleException);
