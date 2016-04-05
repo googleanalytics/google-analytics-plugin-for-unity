@@ -116,14 +116,17 @@ public class GoogleAnalyticsMPV3 {
   }
 
   private void SendGaHitWithMeasurementProtocol(string url) {
+    if (optOut) {
+      return;
+    }
     if (String.IsNullOrEmpty(url)) {
       if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
         Debug.Log("No tracking code set for 'Other' platforms - hit will not be sent.");
       }
       return;
     }
-    if (dryRun || optOut) {
-      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.WARNING)) {
+    if (dryRun) {
+      if (GoogleAnalyticsV3.belowThreshold(logLevel, GoogleAnalyticsV3.DebugMode.VERBOSE)) {
         Debug.Log("Dry run or opt out enabled - hits will not be sent.");
       }
       return;
