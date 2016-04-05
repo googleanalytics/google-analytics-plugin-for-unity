@@ -105,9 +105,30 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
   }
 
   internal void LogTransaction(TransactionHitBuilder builder) {
+    AndroidJavaObject transactionBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$TransactionBuilder");
+    transactionBuilder.Call<AndroidJavaObject>("setTransactionId", new object[] { builder.GetTransactionID() });
+    transactionBuilder.Call<AndroidJavaObject>("setAffiliation", new object[] { builder.GetAffiliation() });
+    transactionBuilder.Call<AndroidJavaObject>("setRevenue", new object[] { builder.GetRevenue() });
+    transactionBuilder.Call<AndroidJavaObject>("setTax", new object[] { builder.GetTax() });
+    transactionBuilder.Call<AndroidJavaObject>("setShipping", new object[] { builder.GetShipping() });
+    transactionBuilder.Call<AndroidJavaObject>("setCurrencyCode", new object[] { builder.GetCurrencyCode() });
+
+    object[] builtTransaction = new object[] { transactionBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtTransaction);
   }
 
   internal void LogItem(ItemHitBuilder builder) {
+    AndroidJavaObject itemBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$ItemBuilder");
+    itemBuilder.Call<AndroidJavaObject>("setTransactionId", new object[] { builder.GetTransactionID() });
+    itemBuilder.Call<AndroidJavaObject>("setName", new object[] { builder.GetName() });
+    itemBuilder.Call<AndroidJavaObject>("setSku", new object[] { builder.GetSKU() });
+    itemBuilder.Call<AndroidJavaObject>("setCategory", new object[] { builder.GetCategory() });
+    itemBuilder.Call<AndroidJavaObject>("setPrice", new object[] { builder.GetPrice() });
+    itemBuilder.Call<AndroidJavaObject>("setQuantity", new object[] { builder.GetQuantity() });
+    itemBuilder.Call<AndroidJavaObject>("setCurrencyCode", new object[] { builder.GetCurrencyCode() });
+
+    object[] builtItem = new object[] { itemBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtItem);
   }
 
   public void LogException(ExceptionHitBuilder builder) {
