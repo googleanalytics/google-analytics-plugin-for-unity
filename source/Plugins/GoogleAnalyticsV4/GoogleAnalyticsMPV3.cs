@@ -78,7 +78,8 @@ public class GoogleAnalyticsMPV3 {
         + AddRequiredMPParameter(Fields.TRACKING_ID, trackingCode)
         + AddRequiredMPParameter(Fields.APP_ID, bundleIdentifier)
         + AddRequiredMPParameter(Fields.CLIENT_ID, clientId)
-        + AddRequiredMPParameter(Fields.APP_VERSION, appVersion);
+        + AddRequiredMPParameter(Fields.APP_VERSION, appVersion)
+        + AddRequiredMPParameter(Fields.USER_AGENT_OVERRIDE, GetUserAgent());
       if(anonymizeIP){
         url += AddOptionalMPParameter(Fields.ANONYMIZE_IP, 1);
       }
@@ -417,6 +418,71 @@ public class GoogleAnalyticsMPV3 {
 
   public void SetOptOut(bool optOut) {
     this.optOut = optOut;
+  }
+
+  string GetWindowsNTVersion(string UnityOSVersionName)
+  {
+    //https://en.wikipedia.org/wiki/Windows_NT
+    if (UnityOSVersionName.Contains("(5.1"))
+      return "Windows NT 5.1";
+    else if (UnityOSVersionName.Contains("(5.2"))
+      return "Windows NT 5.2";
+    else if (UnityOSVersionName.Contains("(6.0"))
+      return "Windows NT 6.0";
+    else if (UnityOSVersionName.Contains("(6.1"))
+      return "Windows NT 6.1";
+    else if (UnityOSVersionName.Contains("(6.2"))
+      return "Windows NT 6.2";
+#if UNITY_4_6
+    else if (UnityOSVersionName.Contains("(6.3"))
+    {
+      // But on older versions of Unity on Windows 10, it returns "Windows 8.1  (6.3.10586) 64bit" for Windows 10.0.10586 64 bit
+      System.Text.RegularExpressions.Match regexResult = System.Text.RegularExpressions.Regex.Match(UnityOSVersionName, @"Windows.*?\((\d{0,5}\.\d{0,5}\.(\d{0,5}))\)");
+      if (regexResult.Success)
+      {
+        string buildNumberString = regexResult.Groups[2].Value;
+        // Fix a bug in older versions of Unity where Windows 10 isn't recognised properly
+        int buildNumber = 0;
+        Int32.TryParse(buildNumberString, out buildNumber);
+        if (buildNumber > 10000)
+        {
+          return "Windows NT 10.0";
+        }
+      }
+      return "Windows NT 6.3";
+    }
+#else
+    else if (UnityOSVersionName.Contains("(6.3"))
+      return "Windows NT 6.3";
+    else if (UnityOSVersionName.Contains("(10.0"))
+      return "Windows NT 10.0";
+#endif
+    else
+      return "Unknown";
+  }
+
+  string GetUserAgent()
+  {
+    string str_userAgent;
+    str_userAgent = "Unknown";
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+    str_userAgent = (Application.platform == RuntimePlatform.OSXPlayer ? "Unity/" : "UnityEditor/")
+      + Application.unityVersion
+      + " (Macintosh; "
+      + (SystemInfo.processorType.Contains("Intel") ? "Intel " : "PPC ")
+      + SystemInfo.operatingSystem.Replace(".", "_") + ")"
+      + " Unity/" + Application.unityVersion
+      + " Unity/" + Application.unityVersion;
+#endif
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+    str_userAgent =
+      (Application.platform == RuntimePlatform.WindowsPlayer ? "Unity/" : "UnityEditor/") + Application.unityVersion
+      + " (" + GetWindowsNTVersion(SystemInfo.operatingSystem) + (SystemInfo.operatingSystem.Contains("64bit") ? "; WOW64)" : ")")
+      + " Unity/" + Application.unityVersion
+      + " (KHTML, like Gecko) Unity/" + Application.unityVersion
+      + " Unity/" + Application.unityVersion;
+#endif
+    return str_userAgent;
   }
 
 #endif
