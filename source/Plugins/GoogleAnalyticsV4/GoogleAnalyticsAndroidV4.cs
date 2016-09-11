@@ -141,6 +141,13 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
   }
 
   public void LogSocial(SocialHitBuilder builder) {
+    AndroidJavaObject socialBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$SocialBuilder");
+    socialBuilder.Call<AndroidJavaObject>("setAction", new object[] { builder.GetSocialAction() });
+    socialBuilder.Call<AndroidJavaObject>("setNetwork", new object[] { builder.GetSocialNetwork() });
+    socialBuilder.Call<AndroidJavaObject>("setTarget", new object[] { builder.GetSocialTarget() });
+
+    object[] builtSocial = new object[] { socialBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtSocial);
   }
 
   public void LogTiming(TimingHitBuilder builder) {
