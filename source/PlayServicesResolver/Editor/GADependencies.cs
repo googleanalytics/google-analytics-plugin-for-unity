@@ -19,8 +19,6 @@ public static class GADependencies
 
     public static void RegisterDependencies()
     {
-        //svcSupport.DependOn("com.google.android.gms", "play-services-base", "8.1+");
-        svcSupport.DependOn("com.google.android.gms", "play-services-analytics", "LATEST");
-        //svcSupport.DependOn("com.google.android.gms.analytics", "analytics", "9.2+");
+        svcSupport.DependOn("com.google.android.gms", "play-services-analytics", "9.4");
     }
 }
