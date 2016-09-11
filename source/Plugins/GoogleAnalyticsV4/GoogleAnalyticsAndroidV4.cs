@@ -151,6 +151,14 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
   }
 
   public void LogTiming(TimingHitBuilder builder) {
+    AndroidJavaObject timingBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$TimingBuilder");
+    timingBuilder.Call<AndroidJavaObject>("setCategory", new object[] { builder.GetTimingCategory() });
+    timingBuilder.Call<AndroidJavaObject>("setLabel", new object[] { builder.GetTimingLabel() });
+    timingBuilder.Call<AndroidJavaObject>("setValue", new object[] { builder.GetTimingInterval() });
+    timingBuilder.Call<AndroidJavaObject>("setVariable", new object[] { builder.GetTimingName() });
+
+    object[] builtTiming = new object[] { timingBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtTiming);
   }
 
   public void DispatchHits() {
