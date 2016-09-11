@@ -90,6 +90,16 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
     tracker.Call("setScreenName", builder.GetScreenName());
 
     AndroidJavaObject eventBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$ScreenViewBuilder");
+
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      eventBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      eventBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+
     object[] builtScreenView = new object[] { eventBuilder.Call<AndroidJavaObject>("build") };
     tracker.Call("send", builtScreenView);
   }
@@ -100,6 +110,16 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
     eventBuilder.Call<AndroidJavaObject>("setAction", new object[] { builder.GetEventAction() });
     eventBuilder.Call<AndroidJavaObject>("setLabel", new object[] { builder.GetEventLabel() });
     eventBuilder.Call<AndroidJavaObject>("setValue", new object[] { builder.GetEventValue() });
+
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      eventBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      eventBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+
     object[] builtEvent = new object[] { eventBuilder.Call<AndroidJavaObject>("build") };
     tracker.Call("send", builtEvent);
   }
@@ -112,6 +132,15 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
     transactionBuilder.Call<AndroidJavaObject>("setTax", new object[] { builder.GetTax() });
     transactionBuilder.Call<AndroidJavaObject>("setShipping", new object[] { builder.GetShipping() });
     transactionBuilder.Call<AndroidJavaObject>("setCurrencyCode", new object[] { builder.GetCurrencyCode() });
+
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      transactionBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      transactionBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
 
     object[] builtTransaction = new object[] { transactionBuilder.Call<AndroidJavaObject>("build") };
     tracker.Call("send", builtTransaction);
@@ -127,17 +156,74 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
     itemBuilder.Call<AndroidJavaObject>("setQuantity", new object[] { builder.GetQuantity() });
     itemBuilder.Call<AndroidJavaObject>("setCurrencyCode", new object[] { builder.GetCurrencyCode() });
 
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      itemBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      itemBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+
     object[] builtItem = new object[] { itemBuilder.Call<AndroidJavaObject>("build") };
     tracker.Call("send", builtItem);
   }
 
   public void LogException(ExceptionHitBuilder builder) {
+    AndroidJavaObject exceptionBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$ExceptionBuilder");
+    exceptionBuilder.Call<AndroidJavaObject>("setDescription", new object[] { builder.GetExceptionDescription() });
+    exceptionBuilder.Call<AndroidJavaObject>("setFatal", new object[] { builder.IsFatal() });
+
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      exceptionBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      exceptionBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+
+    object[] builtException = new object[] { exceptionBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtException);
   }
 
   public void LogSocial(SocialHitBuilder builder) {
+    AndroidJavaObject socialBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$SocialBuilder");
+    socialBuilder.Call<AndroidJavaObject>("setNetwork", new object[] { builder.GetSocialNetwork() });
+    socialBuilder.Call<AndroidJavaObject>("setAction", new object[] { builder.GetSocialAction() });
+    socialBuilder.Call<AndroidJavaObject>("setTarget", new object[] { builder.GetSocialTarget() });
+
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      socialBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      socialBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+
+    object[] builtSocial = new object[] { socialBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtSocial);
   }
 
   public void LogTiming(TimingHitBuilder builder) {
+    AndroidJavaObject timingBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$TimingBuilder");
+    timingBuilder.Call<AndroidJavaObject>("setCategory", new object[] { builder.GetTimingCategory() });
+    timingBuilder.Call<AndroidJavaObject>("setValue", new object[] { builder.GetTimingInterval() });
+    timingBuilder.Call<AndroidJavaObject>("setVariable", new object[] { builder.GetTimingName() });
+    timingBuilder.Call<AndroidJavaObject>("setLabel", new object[] { builder.GetTimingLabel() });
+
+    foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+      timingBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+    foreach(KeyValuePair<int, string> i in builder.GetCustomMetrics())
+    {
+      timingBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+
+    object[] builtTiming = new object[] { timingBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtTiming);
   }
 
   public void DispatchHits() {
