@@ -132,6 +132,12 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
   }
 
   public void LogException(ExceptionHitBuilder builder) {
+    AndroidJavaObject exceptionBuilder = new AndroidJavaObject("com.google.android.gms.analytics.HitBuilders$ExceptionBuilder");
+    exceptionBuilder.Call<AndroidJavaObject>("setDescription", new object[] { builder.GetExceptionDescription() });
+    exceptionBuilder.Call<AndroidJavaObject>("setFatal", new object[] { builder.IsFatal() });
+
+    object[] builtException = new object[] { exceptionBuilder.Call<AndroidJavaObject>("build") };
+    tracker.Call("send", builtException);
   }
 
   public void LogSocial(SocialHitBuilder builder) {
