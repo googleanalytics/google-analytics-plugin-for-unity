@@ -1,4 +1,6 @@
-﻿using Google.JarResolver;
+#if UNITY_ANDROID
+
+using Google.JarResolver;
 using UnityEditor;
 
 [InitializeOnLoad]
@@ -22,3 +24,5 @@ public static class GADependencies
         svcSupport.DependOn("com.google.android.gms", "play-services-analytics", "9.4");
     }
 }
+
+#endif
