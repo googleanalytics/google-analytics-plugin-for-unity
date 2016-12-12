@@ -40,7 +40,7 @@ public class AnalyticsDependencies : AssetPostprocessor
         Google.VersionHandler.InvokeInstanceMethod(
             svcSupport, "DependOn",
             new object[] { "com.google.android.gms", "play-services-analytics",
-                           "9.4" },
+                           "LATEST" },
             namedArgs: new Dictionary<string, object>() {
                 {"packageIds", new string[] {
                         "extra-google-m2repository",
