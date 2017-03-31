@@ -225,7 +225,7 @@ public class GoogleAnalyticsMPV3 {
             WWW.EscapeURL(entry.Value.ToString());
       }
     }
-    foreach(KeyValuePair<int, string> entry in builder.GetCustomMetrics())
+    foreach(KeyValuePair<int, float> entry in builder.GetCustomMetrics())
     {
       if (entry.Value != null) {
         url += Fields.CUSTOM_METRIC.ToString() + entry.Key + "=" +

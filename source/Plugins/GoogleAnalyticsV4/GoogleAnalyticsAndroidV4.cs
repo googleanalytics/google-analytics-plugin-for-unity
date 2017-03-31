@@ -100,6 +100,17 @@ public class GoogleAnalyticsAndroidV4 : IDisposable {
     eventBuilder.Call<AndroidJavaObject>("setAction", new object[] { builder.GetEventAction() });
     eventBuilder.Call<AndroidJavaObject>("setLabel", new object[] { builder.GetEventLabel() });
     eventBuilder.Call<AndroidJavaObject>("setValue", new object[] { builder.GetEventValue() });
+	
+	foreach(KeyValuePair<int, string> i in builder.GetCustomDimensions())
+    {
+        eventBuilder.Call<AndroidJavaObject>("setCustomDimension", new object[] { i.Key, i.Value });
+    }
+
+    foreach(KeyValuePair<int, float> i in builder.GetCustomMetrics())
+    {
+        eventBuilder.Call<AndroidJavaObject>("setCustomMetric", new object[] { i.Key, i.Value });
+    }
+	
     object[] builtEvent = new object[] { eventBuilder.Call<AndroidJavaObject>("build") };
     tracker.Call("send", builtEvent);
   }
