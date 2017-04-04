@@ -150,6 +150,17 @@ public class GoogleAnalyticsV4 : MonoBehaviour {
       instance = this;
 
       DontDestroyOnLoad(instance);
+      
+      // automatically set app parameters from player settings if they are left empty
+      if(string.IsNullOrEmpty(productName)) {
+        productName = Application.productName;
+      }
+      if(string.IsNullOrEmpty(bundleIdentifier)) {
+        bundleIdentifier = Application.bundleIdentifier;
+      }
+      if(string.IsNullOrEmpty(bundleVersion)) {
+        bundleVersion = Application.version;
+      }
 
       Debug.Log("Initializing Google Analytics 0.2.");
 #if UNITY_ANDROID && !UNITY_EDITOR
