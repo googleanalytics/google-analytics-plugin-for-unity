@@ -28,7 +28,7 @@ public abstract class HitBuilder<T> {
 
   private Dictionary<int, string> customDimensions =
       new Dictionary<int,string>();
-  private Dictionary<int, string> customMetrics = new Dictionary<int,string>();
+  private Dictionary<int, float> customMetrics = new Dictionary<int,float>();
 
   private string campaignName = "";
   private string campaignSource = "";
@@ -51,12 +51,12 @@ public abstract class HitBuilder<T> {
     return customDimensions;
   }
 
-  public T SetCustomMetric(int metricNumber, string value) {
+  public T SetCustomMetric(int metricNumber, float value) {
     customMetrics.Add(metricNumber, value);
     return GetThis();
   }
 
-  public Dictionary<int, string> GetCustomMetrics() {
+  public Dictionary<int, float> GetCustomMetrics() {
     return customMetrics;
   }
 
