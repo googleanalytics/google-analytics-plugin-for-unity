@@ -7,23 +7,23 @@ _Unity is a trademark of Unity Technologies._ This project is not in any way end
 
 _iOS is a trademark of Apple, Inc._
 
-##Google Analytics Plugin Documentation
+## Google Analytics Plugin Documentation
 
 Visit [Google Analytics Developers](https://developers.google.com/analytics/) for the latest documentation on the [Google Analytics Plugin for Unity](https://developers.google.com/analytics/devguides/collection/unity/).
 
 
-###Quick links
+### Quick links
   - [Dev Guide](https://developers.google.com/analytics/devguides/collection/unity/devguide) - Learn how to setup, configure and get started with the Google Analytics Plugin for Unity.
   - [API Reference](https://developers.google.com/analytics/devguides/collection/unity/reference) - Describes how to send data and lists all of the methods for the Google Analytics Plugin for Unity.
   - [Troubleshooting](https://developers.google.com/analytics/devguides/collection/unity/troubleshoot) - Tips on debugging and troubleshooting problems with the Google Analytics Plugin for Unity.
 
 
-###Related resources
+### Related resources
   - [Mobile Implementation Guide](https://developers.google.com/analytics/solutions/mobile-implementation-guide) - Learn how to use Google Analytics to measure user interactions and answer questions about game usage.
   - [Mobile App Analytics Google Group](https://groups.google.com/forum/?fromgroups#!forum/ga-mobile-app-analytics) - Community forum where you can ask and answer questions about the plugin.
 
 
-##Thanks
+## Thanks
   - [Knoxx-](https://github.com/Knoxx-) for fixing a typo in the Campaign tracking permissions
   - [mataneine](https://github.com/mataneine) for filtering out meta files during iOS build post processing
   - [g8minhquan](https://github.com/g8minhquan) for identifying the sqlite3.dylib library needs to be added if using the -ObjC linker flag
