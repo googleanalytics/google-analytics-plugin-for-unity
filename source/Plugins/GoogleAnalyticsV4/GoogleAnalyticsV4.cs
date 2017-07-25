@@ -119,7 +119,7 @@ public class GoogleAnalyticsV4 : MonoBehaviour {
     }
 
     if (UncaughtExceptionReporting) {
-#if UNITY_5
+#if UNITY_5 || UNITY_2017
       Application.logMessageReceived += HandleException;
 #else
       Application.RegisterLogCallback (HandleException);
@@ -150,7 +150,7 @@ public class GoogleAnalyticsV4 : MonoBehaviour {
       instance = this;
 
       DontDestroyOnLoad(instance);
-      
+
       // automatically set app parameters from player settings if they are left empty
       if(string.IsNullOrEmpty(productName)) {
         productName = Application.productName;
