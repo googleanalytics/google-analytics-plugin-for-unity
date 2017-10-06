@@ -52,7 +52,7 @@ public class ItemHitBuilder : HitBuilder<ItemHitBuilder> {
   }
 
   public string GetSKU() {
-    return name;
+    return SKU;
   }
 
   public ItemHitBuilder SetSKU(string SKU) {
