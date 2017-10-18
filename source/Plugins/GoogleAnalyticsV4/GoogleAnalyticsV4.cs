@@ -156,7 +156,11 @@ public class GoogleAnalyticsV4 : MonoBehaviour {
         productName = Application.productName;
       }
       if(string.IsNullOrEmpty(bundleIdentifier)) {
+#if UNITY_5
         bundleIdentifier = Application.bundleIdentifier;
+#elif UNITY_2017
+        bundleIdentifier = Application.identifier;
+#endif
       }
       if(string.IsNullOrEmpty(bundleVersion)) {
         bundleVersion = Application.version;
