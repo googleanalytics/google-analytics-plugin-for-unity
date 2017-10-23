@@ -195,9 +195,9 @@ public class GAIHandler {
   [DllImport("__Internal")]
   private static extern void addCustomMetricToDictionary(int key, string value);
   public void _buildCustomMetricsDictionary<T>(HitBuilder<T> builder){
-    foreach(KeyValuePair<int, string> entry in builder.GetCustomMetrics())
+    foreach(KeyValuePair<int, float> entry in builder.GetCustomMetrics())
     {
-      addCustomMetricToDictionary(entry.Key, entry.Value);
+      addCustomMetricToDictionary(entry.Key, entry.Value.ToString());
     }
   }
 
