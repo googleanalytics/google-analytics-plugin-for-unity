@@ -10,13 +10,14 @@ frameworks = [
               'AdSupport.framework',
               'CoreData.framework',
               'SystemConfiguration.framework',
+              ]
+
+libs = [
               'libz.dylib',
               'libsqlite3.dylib'
               ]
 
 framework_dir = path.join(sys.argv[0],'..','..','Plugins','iOS')
-
-
 
 pbx_file_path = sys.argv[1] + '/Unity-iPhone.xcodeproj/project.pbxproj'
 pbx_object = XcodeProject.Load(pbx_file_path)
@@ -24,6 +25,9 @@ pbx_object = XcodeProject.Load(pbx_file_path)
 pbx_object.add_framework_search_paths([path.abspath(framework_dir)])
 
 for framework in frameworks:
-    pbx_object.add_file('System/Library/' + framework, tree='SDKROOT')
+    pbx_object.add_file('System/Library/Frameworks/' + framework, tree='SDKROOT')
+
+for lib in libs:
+    pbx_object.add_file('usr/lib/' + lib, tree='SDKROOT')
 
 pbx_object.save()
