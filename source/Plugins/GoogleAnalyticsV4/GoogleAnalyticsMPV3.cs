@@ -151,7 +151,7 @@ public class GoogleAnalyticsMPV3 {
     while (!request.isDone)
     {
       yield return request;
-      if (request.responseHeaders.ContainsKey("STATUS")) {
+      if (request.responseHeaders != null && request.responseHeaders.ContainsKey("STATUS")) {
         if (request.responseHeaders["STATUS"].Contains("200 OK")) {
           if (GoogleAnalyticsV4.belowThreshold(logLevel, GoogleAnalyticsV4.DebugMode.INFO)) {
             Debug.Log("Successfully sent Google Analytics hit.");
