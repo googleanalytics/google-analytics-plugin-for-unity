@@ -1,3 +1,5 @@
+# This repo is no longer actively maintained
+
 # Google Analytics Plugin for Unity (beta)
 _Copyright (c) 2014 Google Inc. All rights reserved._
 
