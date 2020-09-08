@@ -15,7 +15,7 @@
 
          Additional repositories can be added using the "repositories" element.
     -->
-    <androidPackage spec="com.google.android.gms:play-services-analytics:LATEST">
+    <androidPackage spec="com.google.android.gms:play-services-analytics:16.0.8">
       <!-- androidSdkPackageIds is optional and contains the set of Android
            SDK package manager components (packages) this package requires.
 
