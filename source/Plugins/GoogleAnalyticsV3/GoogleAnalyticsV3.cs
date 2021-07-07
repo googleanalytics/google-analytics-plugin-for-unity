@@ -492,4 +492,17 @@ public void DispatchHits() {
   public static GoogleAnalyticsV3 getInstance() {
     return instance;
   }
+
+  // Block on completion of any pending requests, returning true if all
+  // requests completed (either succeeding or failing) within the given timeout.
+  // Intended to be called from OnApplicationQuit hook.
+  public bool FlushRequests(int timeoutMilliseconds) {
+    #if UNITY_ANDROID && !UNITY_EDITOR
+    return true;
+    #elif UNITY_IPHONE && !UNITY_EDITOR
+    return true;
+    #else
+    return mpTracker.FlushRequests(timeoutMilliseconds);
+    #endif
+  }
 }
